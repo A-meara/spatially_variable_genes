@@ -1,0 +1,38 @@
+## benchmark shortname
+id: spatial_variable_genes_test
+
+## benchmark description
+description: a simple benchmark
+
+## Benchmark version. `1.0`. This is our first attempt, so let's call it major version 1, minor version 0: `1.0`.
+version: 1.0
+
+## Benchmark builder/contact person
+benchmarker: "Aidan"
+
+## Storage flavour for sharing results: currently only S3
+storage_api: S3
+
+## S3 endpoint to share our benchmark results.
+##   `https://s3_object_storage_url.ch` does not exist, and we don't mind -
+##   not sharing results from our benchmark yet.
+storage: https://s3_object_storage_url.ch
+
+## Benchmark YAML schema/specification version. Currently `0.01`.
+benchmark_yaml_spec: 0.01
+
+## License
+## license: MIT  # not yet part of the schema
+
+## The software backend used to run the benchmark
+software_backend: apptainer
+
+## Software environment recipes associated to this benchmark.
+##  Suffice to say they are apptainer images in some ORAS-compatible registry.
+software_environments:
+  R:
+    description: "R 4.3.3 with gfbf-2023 toolchain"
+    apptainer: http://registry.ch/R_4.3.3-gfbf-2023b.sif
+  python:
+    description: "Python3.12.0 with gfbf-2023 toolchain"
+    apptainer: http://registry.ch/python_vX-gfbf-2023b.sif

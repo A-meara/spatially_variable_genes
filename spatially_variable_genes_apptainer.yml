@@ -1,38 +1,111 @@
-## benchmark shortname
+## benchmark header info
 id: spatial_variable_genes_test
-
-## benchmark description
 description: a simple benchmark
-
-## Benchmark version. `1.0`. This is our first attempt, so let's call it major version 1, minor version 0: `1.0`.
 version: 1.0
-
-## Benchmark builder/contact person
-benchmarker: "Aidan"
-
-## Storage flavour for sharing results: currently only S3
+benchmarker: "Aidan Meara"
 storage_api: S3
-
 ## S3 endpoint to share our benchmark results.
 ##   `https://s3_object_storage_url.ch` does not exist, and we don't mind -
 ##   not sharing results from our benchmark yet.
 storage: https://s3_object_storage_url.ch
-
-## Benchmark YAML schema/specification version. Currently `0.01`.
 benchmark_yaml_spec: 0.01
-
-## License
-## license: MIT  # not yet part of the schema
-
-## The software backend used to run the benchmark
 software_backend: apptainer
 
 ## Software environment recipes associated to this benchmark.
 ##  Suffice to say they are apptainer images in some ORAS-compatible registry.
 software_environments:
-  R:
-    description: "R 4.3.3 with gfbf-2023 toolchain"
-    apptainer: http://registry.ch/R_4.3.3-gfbf-2023b.sif
-  python:
-    description: "Python3.12.0 with gfbf-2023 toolchain"
-    apptainer: http://registry.ch/python_vX-gfbf-2023b.sif
+  boostgp:
+    description: "boostgp"
+    apptainer: envs/boostgp.sif
+  random_ranking:
+    description: "random ranking"
+    apptainer: envs/random_ranking.sif
+  true_ranking:
+    description: "true ranking"
+    apptainer: envs/true_ranking.sif
+  correlation:
+    description: "correlation metric"
+    apptainer: envs/correlation.sif
+
+# do I need a commit number for this?
+metric_collectors:
+  - id: correlation
+    name: "correlation"
+    software_environment: "correlation"
+    repository:
+      url: https://github.com/openproblems-bio/task_spatially_variable_genes/tree/a2cb02e6b6054ee0566843f2fd34fa6f63dc96ce/src/metrics/correlation
+    inputs:
+      - metrics.data
+    outputs:
+      - metrics.scores
+
+stages:
+    ## the stage name
+  - id: data
+    ##  here we have a single data stage with one single module,
+    modules:
+        ## unique module id
+      - id: D1
+        ## module name in a longer form
+        name: "Dataset 1"
+        ## software environment to run this module; maps to the header `software_environments`
+        software_environment: "python"
+        ## the git-compatible remote, and a particular pinned commit
+        repository:
+          url: https://github.com/omnibenchmark-example/data.git
+          commit: 41aaa0a
+    ## output file paths for this stage members. In this simple case, the output from D1.
+    outputs:
+        ## output id
+      - id: data.image
+        path: "{dataset}.png"
+    
+    ## SVG methods
+  - id: methods
+    ## a list of modules and their repositories, as above
+    modules:
+      - id: boostgp
+        software_environment: "boostgp"
+        repository:
+          url: https://github.com/Minzhe/BOOST-GP.
+          commit: 1004cdd
+      - id: M2
+        ## notice this method runs in a container offering some R capabilities
+        software_environment: "R"
+        repository:
+          url: https://github.com/omnibenchmark-example/method2.git
+          commit: 10sg4cdd
+    ## input identifiers, refering to the `data stage` outputs
+    inputs:
+      - entries: data.image
+    ## stage-specific outputs
+    outputs:
+      - id: methods.matrix
+        path: "{dataset}.matrix.tsv.gz"
+    ## the stage name
+  - id: metrics
+    ## a list of modules and their repositories, as above
+    modules:
+      - id: m1
+        software_environment: "python"
+        repository:
+          url: https://github.com/omnibenchmark-example/metric.git
+          commit: 4504cdd
+      - id: m2
+        software_environment: "R"
+        repository:
+          url: https://github.com/omnibenchmark-example/metric2.git
+          commit: 7sg4cdd
+    ## input identifiers, refering to the `data stage` outputs
+    inputs:
+      - entries: methods.matrix
+    ## stage specific-outputs
+    outputs:
+      - id: metrics.json
+        ## output path. Wildcards will get dynamicly resoved to:
+        ##   input: not the project root anymore, but the path to the deepest file input (a method's output)
+        ##   stage: `metrics` (current stage id)
+        ##   module: `m1` or `m2`
+        ##   params: `empty` (no parameters added)
+        ##   dataset: `D1` (here datasets refer to the initial stage above, not to the module name)
+        path: "{dataset}.json"

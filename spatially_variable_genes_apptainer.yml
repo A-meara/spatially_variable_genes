@@ -1,111 +1,309 @@
 ## benchmark header info
-id: spatial_variable_genes_test
-description: a simple benchmark
+id: spatial_variable_genes_benchmark
+description: Benchmark for evaluating spatially variable gene detection methods on spatial transcriptomics data
 version: 1.0
 benchmarker: "Aidan Meara"
 storage_api: S3
 ## S3 endpoint to share our benchmark results.
-##   `https://s3_object_storage_url.ch` does not exist, and we don't mind -
-##   not sharing results from our benchmark yet.
 storage: https://s3_object_storage_url.ch
 benchmark_yaml_spec: 0.01
 software_backend: apptainer
 
 ## Software environment recipes associated to this benchmark.
-##  Suffice to say they are apptainer images in some ORAS-compatible registry.
+##  These are apptainer .sif images converted from OpenProblems Docker containers
 software_environments:
+  python_base:
+    description: "Python base environment with anndata for data loading"
+    apptainer: envs/python_base.sif
   boostgp:
-    description: "boostgp"
+    description: "BOOST-GP method environment"
     apptainer: envs/boostgp.sif
   random_ranking:
-    description: "random ranking"
+    description: "Random ranking control method"
     apptainer: envs/random_ranking.sif
   true_ranking:
-    description: "true ranking"
+    description: "True ranking control method"
     apptainer: envs/true_ranking.sif
   correlation:
-    description: "correlation metric"
+    description: "Correlation metric environment"
     apptainer: envs/correlation.sif
+  ## TODO: Uncomment when sif files are ready
+  # gpcounts:
+  #   description: "GPcounts method environment"
+  #   apptainer: envs/gpcounts.sif
+  # moran_i:
+  #   description: "Moran's I method environment"
+  #   apptainer: envs/moran_i.sif
+  # nnsvg:
+  #   description: "nnSVG method environment"
+  #   apptainer: envs/nnsvg.sif
+  # scgco:
+  #   description: "scGCO method environment"
+  #   apptainer: envs/scgco.sif
+  # sepal:
+  #   description: "Sepal method environment"
+  #   apptainer: envs/sepal.sif
+  # somde:
+  #   description: "SomDE method environment"
+  #   apptainer: envs/somde.sif
+  # spagcn:
+  #   description: "SpaGCN method environment"
+  #   apptainer: envs/spagcn.sif
+  # spagft:
+  #   description: "SpaGFT method environment"
+  #   apptainer: envs/spagft.sif
+  # spanve:
+  #   description: "SPANVE method environment"
+  #   apptainer: envs/spanve.sif
+  # spark:
+  #   description: "SPARK method environment"
+  #   apptainer: envs/spark.sif
+  # spark_x:
+  #   description: "SPARK-X method environment"
+  #   apptainer: envs/spark_x.sif
+  # spatialde:
+  #   description: "SpatialDE method environment"
+  #   apptainer: envs/spatialde.sif
+  # spatialde2:
+  #   description: "SpatialDE2 method environment"
+  #   apptainer: envs/spatialde2.sif
 
-# do I need a commit number for this?
+## Metric collectors - evaluate method predictions against ground truth
 metric_collectors:
   - id: correlation
-    name: "correlation"
+    name: "Correlation"
     software_environment: "correlation"
     repository:
-      url: https://github.com/openproblems-bio/task_spatially_variable_genes/tree/a2cb02e6b6054ee0566843f2fd34fa6f63dc96ce/src/metrics/correlation
+      url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      commit: YOUR_COMMIT_HASH  # TODO: Update with actual commit after pushing
     inputs:
-      - metrics.data
+      - methods.predictions
+      - data.solution
     outputs:
       - metrics.scores
 
 stages:
-    ## the stage name
+  ## Data stage - loads spatial transcriptomics datasets
   - id: data
-    ##  here we have a single data stage with one single module,
     modules:
-        ## unique module id
-      - id: D1
-        ## module name in a longer form
-        name: "Dataset 1"
-        ## software environment to run this module; maps to the header `software_environments`
-        software_environment: "python"
-        ## the git-compatible remote, and a particular pinned commit
+      ## Mouse datasets
+      - id: mouse_brain_coronal
+        name: "Mouse Brain Coronal Section 1"
+        software_environment: "python_base"
         repository:
-          url: https://github.com/omnibenchmark-example/data.git
-          commit: 41aaa0a
-    ## output file paths for this stage members. In this simple case, the output from D1.
+          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+          commit: YOUR_COMMIT_HASH  # TODO: Update with actual commit
+        parameters:
+          dataset_id: spatial_10x_visium/mouse_brain_coronal_section1
+
+      ## TODO: Uncomment additional datasets when ready to scale up
+      # - id: mouse_olfactory_bulb
+      #   name: "Mouse Olfactory Bulb"
+      #   software_environment: "python_base"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+      #   parameters:
+      #     dataset_id: spatial_10x_visium/mouse_olfactory_bulb
+
+      # - id: mouse_embryo
+      #   name: "Mouse Embryo"
+      #   software_environment: "python_base"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+      #   parameters:
+      #     dataset_id: spatial_10x_visium/mouse_embryo
+
+      # ## Human datasets
+      # - id: human_brain_cancer
+      #   name: "Human Brain Cancer"
+      #   software_environment: "python_base"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+      #   parameters:
+      #     dataset_id: spatial_10x_visium/human_brain_cancer
+
+      # - id: human_heart
+      #   name: "Human Heart"
+      #   software_environment: "python_base"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+      #   parameters:
+      #     dataset_id: spatial_10x_visium/human_heart
+
+      # - id: human_breast_cancer_1
+      #   name: "Human Breast Cancer 1"
+      #   software_environment: "python_base"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+      #   parameters:
+      #     dataset_id: spatial_10x_visium/human_breast_cancer_1
+
+    ## Data stage outputs
     outputs:
-        ## output id
-      - id: data.image
-        path: "{dataset}.png"
-    
-    ## SVG methods
+      - id: data.dataset
+        path: "dataset.h5ad"
+      - id: data.solution
+        path: "solution.h5ad"
+
+  ## Methods stage - SVG detection methods
   - id: methods
-    ## a list of modules and their repositories, as above
     modules:
+      ## Control methods
+      - id: random_ranking
+        name: "Random Ranking"
+        software_environment: "random_ranking"
+        repository:
+          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+          commit: YOUR_COMMIT_HASH
+        parameters:
+          seed: 42
+
+      - id: true_ranking
+        name: "True Ranking"
+        software_environment: "true_ranking"
+        repository:
+          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+          commit: YOUR_COMMIT_HASH
+
+      ## R-based methods
       - id: boostgp
+        name: "BOOST-GP"
         software_environment: "boostgp"
         repository:
-          url: https://github.com/Minzhe/BOOST-GP.
-          commit: 1004cdd
-      - id: M2
-        ## notice this method runs in a container offering some R capabilities
-        software_environment: "R"
-        repository:
-          url: https://github.com/omnibenchmark-example/method2.git
-          commit: 10sg4cdd
-    ## input identifiers, refering to the `data stage` outputs
+          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+          commit: YOUR_COMMIT_HASH
+        parameters:
+          n_iter: 10
+
+      # - id: nnsvg
+      #   name: "nnSVG"
+      #   software_environment: "nnsvg"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: spark
+      #   name: "SPARK"
+      #   software_environment: "spark"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: spark_x
+      #   name: "SPARK-X"
+      #   software_environment: "spark_x"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      ## TODO: Uncomment additional methods when sif files are ready
+      # ## Python-based methods
+      # - id: gpcounts
+      #   name: "GPcounts"
+      #   software_environment: "gpcounts"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: moran_i
+      #   name: "Moran's I"
+      #   software_environment: "moran_i"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+      #   parameters:
+      #     coord_type: generic
+
+      # - id: scgco
+      #   name: "scGCO"
+      #   software_environment: "scgco"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: sepal
+      #   name: "Sepal"
+      #   software_environment: "sepal"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+      #   parameters:
+      #     coord_type: generic
+      #     max_neighs: 6
+
+      # - id: somde
+      #   name: "SomDE"
+      #   software_environment: "somde"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: spagcn
+      #   name: "SpaGCN"
+      #   software_environment: "spagcn"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: spagft
+      #   name: "SpaGFT"
+      #   software_environment: "spagft"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: spanve
+      #   name: "SPANVE"
+      #   software_environment: "spanve"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: spatialde
+      #   name: "SpatialDE"
+      #   software_environment: "spatialde"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+      # - id: spatialde2
+      #   name: "SpatialDE2"
+      #   software_environment: "spatialde2"
+      #   repository:
+      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+      #     commit: YOUR_COMMIT_HASH
+
+    ## Methods consume data stage outputs
     inputs:
-      - entries: data.image
-    ## stage-specific outputs
+      - entries: data.dataset
+      - entries: data.solution  # Only needed for control methods
+
+    ## Methods stage outputs
     outputs:
-      - id: methods.matrix
-        path: "{dataset}.matrix.tsv.gz"
-    ## the stage name
+      - id: methods.predictions
+        path: "{dataset}_{method}_output.h5ad"
+
+  ## Metrics stage - evaluate predictions
   - id: metrics
-    ## a list of modules and their repositories, as above
     modules:
-      - id: m1
-        software_environment: "python"
+      - id: correlation
+        name: "Kendall Correlation"
+        software_environment: "correlation"
         repository:
-          url: https://github.com/omnibenchmark-example/metric.git
-          commit: 4504cdd
-      - id: m2
-        software_environment: "R"
-        repository:
-          url: https://github.com/omnibenchmark-example/metric2.git
-          commit: 7sg4cdd
-    ## input identifiers, refering to the `data stage` outputs
+          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
+          commit: YOUR_COMMIT_HASH
+
+    ## Metrics consume method predictions and ground truth
     inputs:
-      - entries: methods.matrix
-    ## stage specific-outputs
+      - entries: methods.predictions
+      - entries: data.solution
+
+    ## Metrics stage outputs
     outputs:
-      - id: metrics.json
-        ## output path. Wildcards will get dynamicly resoved to:
-        ##   input: not the project root anymore, but the path to the deepest file input (a method's output)
-        ##   stage: `metrics` (current stage id)
-        ##   module: `m1` or `m2`
-        ##   params: `empty` (no parameters added)
-        ##   dataset: `D1` (here datasets refer to the initial stage above, not to the module name)
-        path: "{dataset}.json"
+      - id: metrics.scores
+        path: "{dataset}_{method}_scores.h5ad"

@@ -1,0 +1,55 @@
+name: load_spatial_data
+namespace: data_loaders
+description: Load spatial transcriptomics datasets from local storage
+
+info:
+  type: data_loader
+  type_info:
+    label: Spatial Data Loader
+    summary: Loads pre-processed spatial transcriptomics datasets
+    description: |
+      This component loads spatial transcriptomics datasets stored locally
+      in the datasets/ directory and makes them available to the benchmark
+      pipeline. It copies dataset.h5ad, solution.h5ad, and simulated_dataset.h5ad
+      files to the output directory.
+
+arguments:
+  - name: --dataset_id
+    type: string
+    required: true
+    description: |
+      Dataset identifier matching the directory structure in datasets/.
+      Example: spatial_10x_visium/mouse_brain_coronal_section1
+  - name: --output_dir
+    type: string
+    required: true
+    direction: output
+    description: Output directory where dataset files will be copied
+  - name: --data_source_dir
+    type: string
+    required: false
+    description: |
+      Base directory containing the datasets. Defaults to ../datasets
+      relative to the script location.
+  - name: --name
+    type: string
+    required: false
+    description: Optional name for this data module (for omnibenchmark compatibility)
+
+resources:
+  - type: python_script
+    path: load_spatial_data.py
+
+engines:
+  - type: docker
+    image: openproblems/base_python:1.0.0
+    setup:
+      - type: python
+        packages:
+          - anndata
+
+runners:
+  - type: executable
+  - type: nextflow
+    directives:
+      label: [lowtime, lowmem, lowcpu]

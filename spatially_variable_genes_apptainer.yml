@@ -93,10 +93,9 @@ stages:
         software_environment: "python_base"
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
-          commit: 40c5186
-  # TODO: Update with actual commit
+          commit: 40c5186  # TODO: Update with actual commit
         parameters:
-          dataset_id: spatial_10x_visium/mouse_brain_coronal_section1
+          - values: ["--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1"]
 
       ## TODO: Uncomment additional datasets when ready to scale up
       # - id: mouse_olfactory_bulb
@@ -167,9 +166,8 @@ stages:
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
           commit: 40c5186
-
         parameters:
-          seed: 42
+          - values: ["--seed", "42"]
 
       - id: true_ranking
         name: "True Ranking"
@@ -186,9 +184,8 @@ stages:
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
           commit: 40c5186
-
         parameters:
-          n_iter: 10
+          - values: ["--n_iter", "10"]
 
       # - id: nnsvg
       #   name: "nnSVG"

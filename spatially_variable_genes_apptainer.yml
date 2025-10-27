@@ -74,8 +74,9 @@ metric_collectors:
     name: "Correlation"
     software_environment: "correlation"
     repository:
-      url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      commit: YOUR_COMMIT_HASH  # TODO: Update with actual commit after pushing
+      url: https://github.com/A-meara/spatially_variable_genes
+      commit: 40c5186
+  
     inputs:
       - methods.predictions
       - data.solution
@@ -91,8 +92,9 @@ stages:
         name: "Mouse Brain Coronal Section 1"
         software_environment: "python_base"
         repository:
-          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-          commit: YOUR_COMMIT_HASH  # TODO: Update with actual commit
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: 40c5186
+  # TODO: Update with actual commit
         parameters:
           dataset_id: spatial_10x_visium/mouse_brain_coronal_section1
 
@@ -101,8 +103,9 @@ stages:
       #   name: "Mouse Olfactory Bulb"
       #   software_environment: "python_base"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
       #   parameters:
       #     dataset_id: spatial_10x_visium/mouse_olfactory_bulb
 
@@ -110,8 +113,9 @@ stages:
       #   name: "Mouse Embryo"
       #   software_environment: "python_base"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
       #   parameters:
       #     dataset_id: spatial_10x_visium/mouse_embryo
 
@@ -120,8 +124,9 @@ stages:
       #   name: "Human Brain Cancer"
       #   software_environment: "python_base"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
       #   parameters:
       #     dataset_id: spatial_10x_visium/human_brain_cancer
 
@@ -129,8 +134,9 @@ stages:
       #   name: "Human Heart"
       #   software_environment: "python_base"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
       #   parameters:
       #     dataset_id: spatial_10x_visium/human_heart
 
@@ -138,8 +144,9 @@ stages:
       #   name: "Human Breast Cancer 1"
       #   software_environment: "python_base"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
       #   parameters:
       #     dataset_id: spatial_10x_visium/human_breast_cancer_1
 
@@ -158,8 +165,9 @@ stages:
         name: "Random Ranking"
         software_environment: "random_ranking"
         repository:
-          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-          commit: YOUR_COMMIT_HASH
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: 40c5186
+
         parameters:
           seed: 42
 
@@ -167,16 +175,18 @@ stages:
         name: "True Ranking"
         software_environment: "true_ranking"
         repository:
-          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-          commit: YOUR_COMMIT_HASH
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: 40c5186
+
 
       ## R-based methods
       - id: boostgp
         name: "BOOST-GP"
         software_environment: "boostgp"
         repository:
-          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-          commit: YOUR_COMMIT_HASH
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: 40c5186
+
         parameters:
           n_iter: 10
 
@@ -184,22 +194,25 @@ stages:
       #   name: "nnSVG"
       #   software_environment: "nnsvg"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: spark
       #   name: "SPARK"
       #   software_environment: "spark"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: spark_x
       #   name: "SPARK-X"
       #   software_environment: "spark_x"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       ## TODO: Uncomment additional methods when sif files are ready
       # ## Python-based methods
@@ -207,15 +220,17 @@ stages:
       #   name: "GPcounts"
       #   software_environment: "gpcounts"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: moran_i
       #   name: "Moran's I"
       #   software_environment: "moran_i"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
       #   parameters:
       #     coord_type: generic
 
@@ -223,15 +238,17 @@ stages:
       #   name: "scGCO"
       #   software_environment: "scgco"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: sepal
       #   name: "Sepal"
       #   software_environment: "sepal"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
       #   parameters:
       #     coord_type: generic
       #     max_neighs: 6
@@ -240,43 +257,49 @@ stages:
       #   name: "SomDE"
       #   software_environment: "somde"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: spagcn
       #   name: "SpaGCN"
       #   software_environment: "spagcn"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: spagft
       #   name: "SpaGFT"
       #   software_environment: "spagft"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: spanve
       #   name: "SPANVE"
       #   software_environment: "spanve"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: spatialde
       #   name: "SpatialDE"
       #   software_environment: "spatialde"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
       # - id: spatialde2
       #   name: "SpatialDE2"
       #   software_environment: "spatialde2"
       #   repository:
-      #     url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-      #     commit: YOUR_COMMIT_HASH
+      #     url: https://github.com/A-meara/spatially_variable_genes
+      #     commit: 40c5186
+
 
     ## Methods consume data stage outputs
     inputs:
@@ -295,8 +318,9 @@ stages:
         name: "Kendall Correlation"
         software_environment: "correlation"
         repository:
-          url: https://github.com/YOUR_USERNAME/spatially_variable_genes
-          commit: YOUR_COMMIT_HASH
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: 40c5186
+
 
     ## Metrics consume method predictions and ground truth
     inputs:

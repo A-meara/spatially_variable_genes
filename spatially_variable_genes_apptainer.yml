@@ -81,7 +81,8 @@ metric_collectors:
       - methods.predictions
       - data.solution
     outputs:
-      - metrics.scores
+      - id: metrics.scores
+        path: "{input}/{stage}/{module}/{params}/{dataset}_scores.h5ad"
 
 stages:
   ## Data stage - loads spatial transcriptomics datasets
@@ -152,9 +153,9 @@ stages:
     ## Data stage outputs
     outputs:
       - id: data.dataset
-        path: "dataset.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}.dataset.h5ad"
       - id: data.solution
-        path: "solution.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}.solution.h5ad"
 
   ## Methods stage - SVG detection methods
   - id: methods
@@ -306,7 +307,7 @@ stages:
     ## Methods stage outputs
     outputs:
       - id: methods.predictions
-        path: "{dataset}_{method}_output.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}_output.h5ad"
 
   ## Metrics stage - evaluate predictions
   - id: metrics
@@ -327,4 +328,4 @@ stages:
     ## Metrics stage outputs
     outputs:
       - id: metrics.scores
-        path: "{dataset}_{method}_scores.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}_scores.h5ad"

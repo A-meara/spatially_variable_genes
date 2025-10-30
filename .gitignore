@@ -6,3 +6,6 @@
 *.vscode/
 /examples
 scripts/
+.snakemake/
+Snakefile
+snakemake.log

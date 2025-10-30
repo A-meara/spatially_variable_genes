@@ -74,9 +74,10 @@ metric_collectors:
     name: "Score Aggregation"
     software_environment: "python_base"
     repository:
-      url: https://github.com/A-meara/spatially_variable_genes/metric_collectors/scoring
+      url: https://github.com/A-meara/spatially_variable_genes
       commit: 40c5186
-
+    parameters:
+      - values: ["--component", "metric_collectors/scoring"]
     inputs:
       - metrics.scores
     outputs:
@@ -92,10 +93,10 @@ stages:
         name: "Mouse Brain Coronal Section 1"
         software_environment: "python_base"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes/data_loader
+          url: https://github.com/A-meara/spatially_variable_genes
           commit: 40c5186  # TODO: Update with actual commit
         parameters:
-          - values: ["--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1"]
+          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1"]
 
       ## TODO: Uncomment additional datasets when ready to scale up
       # - id: mouse_olfactory_bulb
@@ -152,9 +153,9 @@ stages:
     ## Data stage outputs
     outputs:
       - id: data.dataset
-        path: "{input}/{stage}/{module}/{params}/{dataset}.dataset.h5ad"
+        path: "dataset.h5ad"
       - id: data.solution
-        path: "{input}/{stage}/{module}/{params}/{dataset}.solution.h5ad"
+        path: "solution.h5ad"
 
   ## Methods stage - SVG detection methods
   - id: methods
@@ -164,28 +165,29 @@ stages:
         name: "Random Ranking"
         software_environment: "random_ranking"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes/methods/random_ranking
+          url: https://github.com/A-meara/spatially_variable_genes
           commit: 40c5186
         parameters:
-          - values: ["--seed", "42"]
+          - values: ["--component", "methods/random_ranking", "--seed", "42"]
 
       - id: true_ranking
         name: "True Ranking"
         software_environment: "true_ranking"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes/methods/true_ranking
+          url: https://github.com/A-meara/spatially_variable_genes
           commit: 40c5186
-
+        parameters:
+          - values: ["--component", "methods/true_ranking"]
 
       ## R-based methods
       - id: boostgp
         name: "BOOST-GP"
         software_environment: "boostgp"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes/methods/boostgp
+          url: https://github.com/A-meara/spatially_variable_genes
           commit: 40c5186
         parameters:
-          - values: ["--n_iter", "10"]
+          - values: ["--component", "methods/boostgp", "--n_iter", "10"]
 
       # - id: nnsvg
       #   name: "nnSVG"
@@ -300,13 +302,14 @@ stages:
 
     ## Methods consume data stage outputs
     inputs:
-      - entries: data.dataset
-      - entries: data.solution  # Only needed for control methods
+      - entries:
+          - data.dataset
+          - data.solution  # Needed for control methods
 
     ## Methods stage outputs
     outputs:
       - id: methods.predictions
-        path: "{input}/{stage}/{module}/{params}/{dataset}_output.h5ad"
+        path: "{name}.h5ad"
 
   ## Metrics stage - evaluate predictions
   - id: metrics
@@ -315,16 +318,18 @@ stages:
         name: "Kendall Correlation"
         software_environment: "correlation"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes/metrics/correlation
+          url: https://github.com/A-meara/spatially_variable_genes
           commit: 40c5186
-
+        parameters:
+          - values: ["--component", "metrics/correlation"]
 
     ## Metrics consume method predictions and ground truth
     inputs:
-      - entries: methods.predictions
-      - entries: data.solution
+      - entries:
+          - methods.predictions
+          - data.solution
 
     ## Metrics stage outputs
     outputs:
       - id: metrics.scores
-        path: "{input}/{stage}/{module}/{params}/{dataset}_scores.h5ad"
+        path: "{name}.h5ad"

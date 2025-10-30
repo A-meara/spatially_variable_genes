@@ -5,6 +5,13 @@ Data loader for spatially variable genes benchmark.
 This module loads spatial transcriptomics datasets and outputs them in the format
 expected by the omnibenchmark framework. It can load data from local h5ad files
 or download them from a remote source.
+
+Omnibenchmark standard arguments:
+  --output_dir: Directory where outputs will be saved
+  --name: Dataset name
+
+Component-specific arguments:
+  --dataset_id: Dataset identifier (e.g., "spatial_10x_visium/mouse_brain_coronal_section1")
 """
 
 import argparse

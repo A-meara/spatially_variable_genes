@@ -3,41 +3,42 @@
 Aggregate individual metric scores from multiple h5ad files into a unified table.
 This module collects all metric outputs (h5ad files with scores in uns) and
 aggregates them into a CSV file for analysis.
+
+Omnibenchmark passes:
+  --output_dir: Directory where output will be saved
+  --metrics.scores: List of metric h5ad files to aggregate
 """
 
 import argparse
-import glob
 import os
 import pandas as pd
 import anndata as ad
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Aggregate metric scores from multiple h5ad files')
-    parser.add_argument('--input_dir', type=str, required=True,
-                       help='Directory containing metric h5ad files')
-    parser.add_argument('--input_pattern', type=str, default='**/*_scores.h5ad',
-                       help='Glob pattern to match metric files (default: **/*_scores.h5ad)')
-    parser.add_argument('--output', type=str, required=True,
-                       help='Output CSV file path for aggregated scores')
+    parser.add_argument('--output_dir', type=str, required=True,
+                       help='Output directory where aggregated scores will be saved')
+    parser.add_argument('--metrics.scores', type=str, nargs='+', required=True,
+                       help='List of metric h5ad files to aggregate')
     return parser.parse_args()
 
 def main():
     args = parse_args()
 
-    print(f"Searching for metric files in: {args.input_dir}", flush=True)
-    print(f"Using pattern: {args.input_pattern}", flush=True)
+    # Get metric files using getattr for dotted argument
+    metric_files = getattr(args, 'metrics.scores')
 
-    # Find all metric h5ad files
-    search_path = os.path.join(args.input_dir, args.input_pattern)
-    metric_files = glob.glob(search_path, recursive=True)
+    # Create output directory
+    os.makedirs(args.output_dir, exist_ok=True)
+    output_path = os.path.join(args.output_dir, "aggregated_scores.csv")
 
-    print(f"Found {len(metric_files)} metric files", flush=True)
+    print(f"Aggregating {len(metric_files)} metric files", flush=True)
 
     if len(metric_files) == 0:
-        print("WARNING: No metric files found!", flush=True)
+        print("WARNING: No metric files provided!", flush=True)
         # Create empty output file
         df = pd.DataFrame(columns=['dataset_id', 'method_id', 'metric_id', 'metric_value'])
-        df.to_csv(args.output, index=False)
+        df.to_csv(output_path, index=False)
         return
 
     # Collect all scores
@@ -77,8 +78,8 @@ def main():
     df = df.sort_values(['dataset_id', 'method_id', 'metric_id']).reset_index(drop=True)
 
     # Write to CSV
-    print(f"Writing aggregated scores to: {args.output}", flush=True)
-    df.to_csv(args.output, index=False)
+    print(f"Writing aggregated scores to: {output_path}", flush=True)
+    df.to_csv(output_path, index=False)
 
     # Print summary statistics
     print("\n=== Summary ===", flush=True)

@@ -58,9 +58,9 @@ software_environments:
   # spark:
   #   description: "SPARK method environment"
   #   apptainer: envs/spark.sif
-  # spark_x:
-  #   description: "SPARK-X method environment"
-  #   apptainer: envs/spark_x.sif
+  spark_x:
+    description: "SPARK-X method environment"
+    apptainer: envs/spark_x.sif
   # spatialde:
   #   description: "SpatialDE method environment"
   #   apptainer: envs/spatialde.sif
@@ -74,10 +74,8 @@ metric_collectors:
     name: "Score Aggregation"
     software_environment: "python_base"
     repository:
-      url: https://github.com/A-meara/spatially_variable_genes
-      commit: 40c5186
-    parameters:
-      - values: ["--component", "metric_collectors/scoring"]
+      url: https://github.com/A-meara/metric_collector_SVG
+      commit: 8c5998f
     inputs:
       - metrics.scores
     outputs:
@@ -89,12 +87,12 @@ stages:
   - id: data
     modules:
       ## Mouse datasets
-      - id: mouse_brain_coronal
+      - id: spatial_variable_genes
         name: "Mouse Brain Coronal Section 1"
         software_environment: "python_base"
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
-          commit: 40c5186  # TODO: Update with actual commit
+          commit: 40c5186
         parameters:
           - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1"]
 
@@ -205,13 +203,14 @@ stages:
       #     commit: 40c5186
 
 
-      # - id: spark_x
-      #   name: "SPARK-X"
-      #   software_environment: "spark_x"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/spark_x
-      #     commit: 40c5186
-
+      - id: spark_x
+        name: "SPARK-X" 
+        software_environment: "spark_x"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: 40c5186
+        parameters:
+          - values: ["--component", "methods/spark_x", "--num_cores", "4"]
 
       ## TODO: Uncomment additional methods when sif files are ready
       # ## Python-based methods
@@ -309,7 +308,7 @@ stages:
     ## Methods stage outputs
     outputs:
       - id: methods.predictions
-        path: "{name}.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}.h5ad"
 
   ## Metrics stage - evaluate predictions
   - id: metrics
@@ -332,4 +331,4 @@ stages:
     ## Metrics stage outputs
     outputs:
       - id: metrics.scores
-        path: "{name}.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}.h5ad"

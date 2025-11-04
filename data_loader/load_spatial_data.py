@@ -21,13 +21,14 @@ import shutil
 from pathlib import Path
 
 
-def load_dataset(dataset_id, output_dir, data_source_dir=None):
+def load_dataset(dataset_id, output_dir, name=None, data_source_dir=None):
     """
     Load a spatial transcriptomics dataset and copy/symlink files to output directory.
 
     Args:
         dataset_id: Dataset identifier (e.g., "spatial_10x_visium/mouse_brain_coronal_section1")
         output_dir: Output directory where dataset files will be saved
+        name: Dataset name for output files (default: uses dataset_id basename)
         data_source_dir: Base directory containing the datasets (default: ../datasets)
 
     Returns:
@@ -49,19 +50,23 @@ def load_dataset(dataset_id, output_dir, data_source_dir=None):
     # Create output directory
     os.makedirs(output_dir, exist_ok=True)
 
+    # Use name parameter if provided, otherwise use dataset_id basename
+    if name is None:
+        name = Path(dataset_id).name
+
     # Expected files in the dataset directory
     expected_files = {
-        'dataset': 'dataset.h5ad',
-        'solution': 'solution.h5ad',
-        'simulated_dataset': 'simulated_dataset.h5ad'
+        'dataset': ('dataset.h5ad', f'{name}.dataset.h5ad'),
+        'solution': ('solution.h5ad', f'{name}.solution.h5ad'),
+        'simulated_dataset': ('simulated_dataset.h5ad', f'{name}.simulated_dataset.h5ad')
     }
 
     output_files = {}
 
     # Copy or symlink the files to output directory
-    for file_type, filename in expected_files.items():
-        src_file = dataset_path / filename
-        dst_file = Path(output_dir) / filename
+    for file_type, (src_filename, dst_filename) in expected_files.items():
+        src_file = dataset_path / src_filename
+        dst_file = Path(output_dir) / dst_filename
 
         if src_file.exists():
             # Copy the file to output directory
@@ -117,6 +122,7 @@ def main():
         output_files = load_dataset(
             dataset_id=args.dataset_id,
             output_dir=args.output_dir,
+            name=args.name,
             data_source_dir=args.data_source_dir
         )
 

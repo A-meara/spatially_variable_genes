@@ -151,9 +151,9 @@ stages:
     ## Data stage outputs
     outputs:
       - id: data.dataset
-        path: "dataset.h5ad"
+        path: "{dataset}.dataset.h5ad"
       - id: data.solution
-        path: "solution.h5ad"
+        path: "{dataset}.solution.h5ad"
 
   ## Methods stage - SVG detection methods
   - id: methods

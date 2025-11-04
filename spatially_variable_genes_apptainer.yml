@@ -94,7 +94,7 @@ stages:
           url: https://github.com/A-meara/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1"]
+          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
       ## TODO: Uncomment additional datasets when ready to scale up
       # - id: mouse_olfactory_bulb

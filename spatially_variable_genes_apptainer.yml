@@ -308,7 +308,7 @@ stages:
     ## Methods stage outputs
     outputs:
       - id: methods.predictions
-        path: "{input}/{stage}/{module}/{params}/{dataset}.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}.predictions.h5ad"
 
   ## Metrics stage - evaluate predictions
   - id: metrics
@@ -331,4 +331,4 @@ stages:
     ## Metrics stage outputs
     outputs:
       - id: metrics.scores
-        path: "{input}/{stage}/{module}/{params}/{dataset}.h5ad"
+        path: "{input}/{stage}/{module}/{params}/{dataset}.scores.h5ad"

@@ -87,8 +87,8 @@ stages:
   - id: data
     modules:
       ## Mouse datasets
-      - id: spatial_variable_genes
-        name: "Mouse Brain Coronal Section 1"
+      - id: load_spatial_data
+        name: "my_data_loader"
         software_environment: "python_base"
         repository:
           url: https://github.com/A-meara/spatially_variable_genes

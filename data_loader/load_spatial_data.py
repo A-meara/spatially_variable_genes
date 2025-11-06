@@ -96,6 +96,13 @@ def main():
     )
 
     parser.add_argument(
+        '--dataset_name',
+        type=str,
+        default=None,
+        help='Dataset name for output files (e.g., "mouse_brain_coronal_section1"). If not provided, extracted from dataset_id'
+    )
+
+    parser.add_argument(
         '--output_dir',
         type=str,
         required=True,
@@ -113,16 +120,22 @@ def main():
         '--name',
         type=str,
         default=None,
-        help='Optional name for this data module (for omnibenchmark compatibility)'
+        help='Optional name for this data module (for omnibenchmark compatibility, alias for dataset_name)'
     )
 
     args = parser.parse_args()
+
+    # Determine dataset name: prioritize --dataset_name, then --name, then extract from dataset_id
+    dataset_name = args.dataset_name or args.name
+    if dataset_name is None:
+        # Extract from dataset_id (last component of path)
+        dataset_name = Path(args.dataset_id).name
 
     try:
         output_files = load_dataset(
             dataset_id=args.dataset_id,
             output_dir=args.output_dir,
-            name=args.name,
+            name=dataset_name,
             data_source_dir=args.data_source_dir
         )
 

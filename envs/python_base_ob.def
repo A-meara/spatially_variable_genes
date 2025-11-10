@@ -1,0 +1,27 @@
+Bootstrap: docker
+From: python:3.12
+
+%post
+    # Install apt packages
+    apt-get update && apt-get install -y \
+        procps \
+        git \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        "anndata~=0.11.0" \
+        "scanpy~=1.11.0" \
+        pyyaml \
+        requests \
+        jsonschema
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+
+%labels
+    Author "Aidan Meara"
+    Version "1.0"
+    Description "Python 3.12 base image with anndata - matches openproblems/base_python"
+    Source "openproblems-bio/openproblems"

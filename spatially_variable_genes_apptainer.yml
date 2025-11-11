@@ -95,6 +95,7 @@ stages:
           commit: main
         parameters:
           - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--dataset_name", "mouse_brain_coronal_section1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart", "--dataset_name", "human_heart", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
       ## TODO: Uncomment additional datasets when ready to scale up
       # - id: mouse_olfactory_bulb

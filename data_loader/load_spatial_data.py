@@ -125,17 +125,19 @@ def main():
 
     args = parser.parse_args()
 
-    # Determine dataset name: prioritize --dataset_name, then --name, then extract from dataset_id
-    dataset_name = args.dataset_name or args.name
-    if dataset_name is None:
+    # Determine output file name: prioritize --name (what omnibenchmark expects)
+    # Then fall back to --dataset_name, then extract from dataset_id
+    # Omnibenchmark passes --name to match expected output pattern (e.g., "load_spatial_data")
+    output_name = args.name or args.dataset_name
+    if output_name is None:
         # Extract from dataset_id (last component of path)
-        dataset_name = Path(args.dataset_id).name
+        output_name = Path(args.dataset_id).name
 
     try:
         output_files = load_dataset(
             dataset_id=args.dataset_id,
             output_dir=args.output_dir,
-            name=dataset_name,
+            name=output_name,
             data_source_dir=args.data_source_dir
         )
 

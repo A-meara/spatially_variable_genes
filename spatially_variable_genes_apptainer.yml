@@ -89,7 +89,7 @@ stages:
       ## Mouse datasets
       - id: load_spatial_data
         name: "my_data_loader"
-        software_environment: "python_base"
+        software_environment: "python_base_ob"
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
           commit: main

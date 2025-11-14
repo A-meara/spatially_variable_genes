@@ -9,3 +9,4 @@ scripts/
 .snakemake/
 Snakefile
 snakemake.log
+out/

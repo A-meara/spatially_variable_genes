@@ -1,0 +1,25 @@
+Bootstrap: localimage
+From: r_base_ob.sif
+
+%post
+    # Install git if not already present
+    apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
+    # Clone BOOST-GP repository
+    git clone https://github.com/Minzhe/BOOST-GP.git /opt/BOOST-GP
+
+    # Install R packages specific to BOOST-GP
+    Rscript -e "install.packages(c('RcppDist', 'ggplot2'), repos='https://cloud.r-project.org/')"
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export PIP_BREAK_SYSTEM_PACKAGES=1
+    export RETICULATE_PYTHON=/usr/bin/python
+
+%labels
+    Author "Aidan Meara"
+    Version "1.0"
+    Description "BOOST-GP method for spatially variable gene detection"
+    Method "BOOST-GP"
+    Reference "doi:10.1093/bioinformatics/btab455"

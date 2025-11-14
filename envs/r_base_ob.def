@@ -1,0 +1,43 @@
+Bootstrap: docker
+From: rocker/r2u:24.04
+
+%post
+    # Set environment variables for Python
+    export PIP_BREAK_SYSTEM_PACKAGES=1
+    export RETICULATE_PYTHON=/usr/bin/python
+
+    # Install apt packages
+    apt-get update && apt-get install -y \
+        git \
+        procps \
+        libhdf5-dev \
+        libgeos-dev \
+        python3-pip \
+        python3-dev \
+        python-is-python3 \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        rpy2 \
+        "anndata~=0.11.0" \
+        "scanpy~=1.11.0" \
+        pandas \
+        pyyaml \
+        requests \
+        jsonschema
+
+    # Install R packages
+    Rscript -e "install.packages(c('anndata', 'BiocManager', 'reticulate', 'bit64', 'hdf5r'), repos='https://cloud.r-project.org/')"
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export PIP_BREAK_SYSTEM_PACKAGES=1
+    export RETICULATE_PYTHON=/usr/bin/python
+
+%labels
+    Author "Aidan Meara"
+    Version "1.0"
+    Description "R2U 24.04 base image with anndata for R and Python - matches openproblems/base_r"
+    Source "openproblems-bio/openproblems"

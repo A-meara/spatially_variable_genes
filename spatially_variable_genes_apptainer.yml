@@ -22,15 +22,15 @@ software_environments:
     conda: envs/ob_example_clustering.yml
   random_ranking:
     description: "Random ranking control method"
-    apptainer: envs/random_ranking.sif
+    apptainer: envs/python_base_ob.sif
     conda: envs/ob_example_clustering.yml
   true_ranking:
     description: "True ranking control method"
-    apptainer: envs/true_ranking.sif
+    apptainer: envs/python_base_ob.sif
     conda: envs/ob_example_clustering.yml
   correlation:
     description: "Correlation metric environment"
-    apptainer: envs/correlation.sif
+    apptainer: envs/python_base_ob.sif
     conda: envs/ob_example_clustering.yml
   ## TODO: Uncomment when sif files are ready
   # gpcounts:

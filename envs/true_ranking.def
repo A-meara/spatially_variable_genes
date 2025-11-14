@@ -1,0 +1,16 @@
+Bootstrap: localimage
+From: python_base_ob.sif
+
+%post
+    # No additional packages needed - pandas already in base image
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+
+%labels
+    Author "Aidan Meara"
+    Version "1.0"
+    Description "True ranking control method for spatially variable gene detection"
+    Method "True Ranking"
+    Type "Control Method"

@@ -1,0 +1,19 @@
+Bootstrap: localimage
+From: r_base_ob.sif
+
+%post
+    # Install SPARK from GitHub
+    Rscript -e "if (!require('remotes')) install.packages('remotes', repos='https://cloud.r-project.org/'); remotes::install_github('xzhoulab/SPARK')"
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export PIP_BREAK_SYSTEM_PACKAGES=1
+    export RETICULATE_PYTHON=/usr/bin/python
+
+%labels
+    Author "Aidan Meara"
+    Version "1.0"
+    Description "SPARK-X method for spatially variable gene detection"
+    Method "SPARK-X"
+    Reference "doi:10.1186/s13059-021-02404-0"

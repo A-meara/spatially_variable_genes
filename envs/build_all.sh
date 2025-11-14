@@ -77,25 +77,30 @@ else
 fi
 echo ""
 
-# Step 2: Build R method-specific images
-echo "Step 2/2: Building R method images..."
+# Step 2: Build method-specific images (anything that depends on base images)
+echo "Step 2/2: Building method-specific images..."
 echo "-----------------------------------"
 
-echo "Building boostgp.sif..."
-apptainer build boostgp.sif boostgp.def
-echo "✓ boostgp.sif built successfully"
-echo ""
+# Find all .def files that are NOT base images
+method_defs=$(find . -maxdepth 1 -name "*.def" ! -name "python_base_ob.def" ! -name "r_base_ob.def" -exec basename {} \; | sort)
 
-echo "Building spark_x.sif..."
-apptainer build spark_x.sif spark_x.def
-echo "✓ spark_x.sif built successfully"
-echo ""
+if [ -z "$method_defs" ]; then
+    echo "No method-specific .def files found"
+else
+    for def_file in $method_defs; do
+        sif_file="${def_file%.def}.sif"
+        echo "Building $sif_file from $def_file..."
+        apptainer build --force "$sif_file" "$def_file"
+        echo "✓ $sif_file built successfully"
+        echo ""
+    done
+fi
 
 echo "========================================"
 echo "Build Complete!"
 echo "========================================"
 echo ""
 echo "Built images:"
-ls -lh *.sif
+ls -lh *.sif 2>/dev/null || echo "No .sif files found"
 echo ""
-echo "Note: random_ranking, true_ranking, and correlation use python_base_ob.sif directly (no separate build needed)"
+echo "Note: Some methods may use base images directly without separate .def files"

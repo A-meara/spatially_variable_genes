@@ -1,31 +1,32 @@
 #!/usr/bin/env Rscript
-"SPARK-X method for spatially variable gene detection.
-
-SPARK-X is a non-parametric method for rapid and effective detection of
-spatially expressed genes in large spatial transcriptomic studies.
-
-Usage:
-  script.R --output_dir=<dir> --name=<name> --data.dataset=<file> [--num_cores=<n>]
-  script.R (-h | --help)
-
-Options:
-  --output_dir=<dir>     Output directory where files will be saved
-  --name=<name>          Dataset name
-  --data.dataset=<file>  Input dataset h5ad file path
-  --num_cores=<n>        Number of CPU cores to use [default: 4]
-  -h --help              Show this help message
-" -> doc
+#
+# SPARK-X method for spatially variable gene detection.
+#
+# SPARK-X is a non-parametric method for rapid and effective detection of
+# spatially expressed genes in large spatial transcriptomic studies.
 
 suppressMessages(library(SPARK))
 suppressMessages(library(anndata))
-suppressMessages(library(docopt))
+suppressMessages(library(argparse))
+
+# Define command-line arguments
+parser <- ArgumentParser(description='SPARK-X method for spatially variable gene detection')
+parser$add_argument('--output_dir', type='character', required=TRUE,
+                    help='Output directory where files will be saved')
+parser$add_argument('--name', type='character', required=TRUE,
+                    help='Dataset name')
+parser$add_argument('--data.dataset', type='character', required=TRUE,
+                    dest='data_dataset',
+                    help='Input dataset h5ad file path')
+parser$add_argument('--num_cores', type='integer', default=4,
+                    help='Number of CPU cores to use')
 
 # Parse arguments
-opt <- docopt(doc)
+opt <- parser$parse_args()
 
 # Get input path
-input_data_path <- opt$data.dataset
-num_cores <- as.integer(opt$num_cores)
+input_data_path <- opt$data_dataset
+num_cores <- opt$num_cores
 
 # Create output directory and construct output path
 dir.create(opt$output_dir, showWarnings = FALSE, recursive = TRUE)

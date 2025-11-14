@@ -1,30 +1,31 @@
 #!/usr/bin/env Rscript
-"BOOST-GP method for spatially variable gene detection.
-
-Bayesian modeling of spatial molecular profiling data via Gaussian process.
-
-Usage:
-  script.R --output_dir=<dir> --name=<name> --data.dataset=<file> [--n_iter=<n>]
-  script.R (-h | --help)
-
-Options:
-  --output_dir=<dir>     Output directory where files will be saved
-  --name=<name>          Dataset name
-  --data.dataset=<file>  Input dataset h5ad file path
-  --n_iter=<n>           Number of iterations [default: 10]
-  -h --help              Show this help message
-" -> doc
+#
+# BOOST-GP method for spatially variable gene detection.
+#
+# Bayesian modeling of spatial molecular profiling data via Gaussian process.
 
 library(RcppDist)
 library(anndata)
-library(docopt)
+library(argparse)
+
+# Define command-line arguments
+parser <- ArgumentParser(description='BOOST-GP method for spatially variable gene detection')
+parser$add_argument('--output_dir', type='character', required=TRUE,
+                    help='Output directory where files will be saved')
+parser$add_argument('--name', type='character', required=TRUE,
+                    help='Dataset name')
+parser$add_argument('--data.dataset', type='character', required=TRUE,
+                    dest='data_dataset',
+                    help='Input dataset h5ad file path')
+parser$add_argument('--n_iter', type='integer', default=10,
+                    help='Number of iterations')
 
 # Parse arguments
-opt <- docopt(doc)
+opt <- parser$parse_args()
 
 # Get input path
-input_data_path <- opt$data.dataset
-n_iter <- as.integer(opt$n_iter)
+input_data_path <- opt$data_dataset
+n_iter <- opt$n_iter
 
 # Create output directory and construct output path
 dir.create(opt$output_dir, showWarnings = FALSE, recursive = TRUE)

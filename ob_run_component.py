@@ -67,6 +67,21 @@ def main():
         script_path, script_type = find_component_script(component_path)
         print(f"[Dispatcher] Found {script_type} script: {script_path}", flush=True)
 
+        # Only true_ranking needs --data.solution, filter it out for other methods
+        if 'true_ranking' not in component_path:
+            filtered_args = []
+            skip_next = False
+            for arg in remaining_args:
+                if skip_next:
+                    skip_next = False
+                    continue
+                if arg == '--data.solution':
+                    skip_next = True  # Skip the value too
+                    print(f"[Dispatcher] Removing --data.solution (not needed by this method)", flush=True)
+                    continue
+                filtered_args.append(arg)
+            remaining_args = filtered_args
+
         # Build command based on script type
         if script_type == "python":
             cmd = [sys.executable, str(script_path)] + remaining_args

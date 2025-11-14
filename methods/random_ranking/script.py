@@ -27,16 +27,13 @@ parser.add_argument('--name', type=str, required=True,
                     help='Name of the dataset')
 parser.add_argument('--data.dataset', type=str, required=True,
                     help='Path to input dataset h5ad file')
-parser.add_argument('--data.solution', type=str, required=True,
-                    help='Path to solution h5ad file')
 parser.add_argument('--seed', type=int, default=0,
                     help='Random seed for reproducibility')
 
 args = parser.parse_args()
 
-# Get inputs using getattr for dotted arguments
+# Get input using getattr for dotted arguments
 input_data_path = getattr(args, 'data.dataset')
-input_solution_path = getattr(args, 'data.solution')
 
 # Construct output path
 os.makedirs(args.output_dir, exist_ok=True)

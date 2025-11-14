@@ -3,16 +3,37 @@
 # This builds images in the correct order (base images first, then method-specific images)
 #
 # Usage:
-#   ./build_all.sh        # Interactive mode - prompts before rebuilding existing images
-#   ./build_all.sh --yes  # Auto-rebuild mode - rebuilds all images without prompting
+#   ./build_all.sh               # Interactive mode - prompts before rebuilding existing images
+#   ./build_all.sh --yes         # Auto-rebuild mode - rebuilds all images without prompting
+#   ./build_all.sh --yes --quiet # Auto-rebuild with minimal output and progress spinner
 
 set -e  # Exit on any error
 
 # Parse command-line arguments
 AUTO_YES=false
-if [[ "$1" == "--yes" || "$1" == "-y" ]]; then
-    AUTO_YES=true
-fi
+QUIET=false
+for arg in "$@"; do
+    if [[ "$arg" == "--yes" || "$arg" == "-y" ]]; then
+        AUTO_YES=true
+    elif [[ "$arg" == "--quiet" || "$arg" == "-q" ]]; then
+        QUIET=true
+    fi
+done
+
+# Spinner function for quiet mode
+spinner() {
+    local pid=$1
+    local delay=0.1
+    local spinstr='|/-\'
+    while ps -p $pid > /dev/null 2>&1; do
+        local temp=${spinstr#?}
+        printf " [%c]  " "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
+    done
+    printf "    \b\b\b\b"
+}
 
 echo "========================================"
 echo "Building Apptainer Images"
@@ -31,24 +52,48 @@ echo "-----------------------------------"
 if [ -f "python_base_ob.sif" ]; then
     echo "python_base_ob.sif already exists."
     if [ "$AUTO_YES" = true ]; then
-        echo "Auto-rebuild mode: rebuilding python_base_ob.sif..."
-        apptainer build --force python_base_ob.sif python_base_ob.def
-        echo "✓ python_base_ob.sif rebuilt successfully"
+        if [ "$QUIET" = true ]; then
+            echo -n "Rebuilding python_base_ob.sif..."
+            apptainer build --force --silent python_base_ob.sif python_base_ob.def > /dev/null 2>&1 &
+            spinner $!
+            wait $!
+            echo " ✓"
+        else
+            echo "Auto-rebuild mode: rebuilding python_base_ob.sif..."
+            apptainer build --force python_base_ob.sif python_base_ob.def
+            echo "✓ python_base_ob.sif rebuilt successfully"
+        fi
     else
         read -p "Do you want to rebuild it? (y/N): " rebuild_python
         rebuild_python=${rebuild_python:-N}
         if [[ $rebuild_python =~ ^[Yy]$ ]]; then
-            echo "Rebuilding python_base_ob.sif..."
-            apptainer build --force python_base_ob.sif python_base_ob.def
-            echo "✓ python_base_ob.sif rebuilt successfully"
+            if [ "$QUIET" = true ]; then
+                echo -n "Rebuilding python_base_ob.sif..."
+                apptainer build --force --silent python_base_ob.sif python_base_ob.def > /dev/null 2>&1 &
+                spinner $!
+                wait $!
+                echo " ✓"
+            else
+                echo "Rebuilding python_base_ob.sif..."
+                apptainer build --force python_base_ob.sif python_base_ob.def
+                echo "✓ python_base_ob.sif rebuilt successfully"
+            fi
         else
             echo "⊙ Skipping python_base_ob.sif (using existing)"
         fi
     fi
 else
-    echo "Building python_base_ob.sif..."
-    apptainer build python_base_ob.sif python_base_ob.def
-    echo "✓ python_base_ob.sif built successfully"
+    if [ "$QUIET" = true ]; then
+        echo -n "Building python_base_ob.sif..."
+        apptainer build --silent python_base_ob.sif python_base_ob.def > /dev/null 2>&1 &
+        spinner $!
+        wait $!
+        echo " ✓"
+    else
+        echo "Building python_base_ob.sif..."
+        apptainer build python_base_ob.sif python_base_ob.def
+        echo "✓ python_base_ob.sif built successfully"
+    fi
 fi
 echo ""
 
@@ -56,24 +101,48 @@ echo ""
 if [ -f "r_base_ob.sif" ]; then
     echo "r_base_ob.sif already exists."
     if [ "$AUTO_YES" = true ]; then
-        echo "Auto-rebuild mode: rebuilding r_base_ob.sif..."
-        apptainer build --force r_base_ob.sif r_base_ob.def
-        echo "✓ r_base_ob.sif rebuilt successfully"
+        if [ "$QUIET" = true ]; then
+            echo -n "Rebuilding r_base_ob.sif..."
+            apptainer build --force --silent r_base_ob.sif r_base_ob.def > /dev/null 2>&1 &
+            spinner $!
+            wait $!
+            echo " ✓"
+        else
+            echo "Auto-rebuild mode: rebuilding r_base_ob.sif..."
+            apptainer build --force r_base_ob.sif r_base_ob.def
+            echo "✓ r_base_ob.sif rebuilt successfully"
+        fi
     else
         read -p "Do you want to rebuild it? (y/N): " rebuild_r
         rebuild_r=${rebuild_r:-N}
         if [[ $rebuild_r =~ ^[Yy]$ ]]; then
-            echo "Rebuilding r_base_ob.sif..."
-            apptainer build --force r_base_ob.sif r_base_ob.def
-            echo "✓ r_base_ob.sif rebuilt successfully"
+            if [ "$QUIET" = true ]; then
+                echo -n "Rebuilding r_base_ob.sif..."
+                apptainer build --force --silent r_base_ob.sif r_base_ob.def > /dev/null 2>&1 &
+                spinner $!
+                wait $!
+                echo " ✓"
+            else
+                echo "Rebuilding r_base_ob.sif..."
+                apptainer build --force r_base_ob.sif r_base_ob.def
+                echo "✓ r_base_ob.sif rebuilt successfully"
+            fi
         else
             echo "⊙ Skipping r_base_ob.sif (using existing)"
         fi
     fi
 else
-    echo "Building r_base_ob.sif..."
-    apptainer build r_base_ob.sif r_base_ob.def
-    echo "✓ r_base_ob.sif built successfully"
+    if [ "$QUIET" = true ]; then
+        echo -n "Building r_base_ob.sif..."
+        apptainer build --silent r_base_ob.sif r_base_ob.def > /dev/null 2>&1 &
+        spinner $!
+        wait $!
+        echo " ✓"
+    else
+        echo "Building r_base_ob.sif..."
+        apptainer build r_base_ob.sif r_base_ob.def
+        echo "✓ r_base_ob.sif built successfully"
+    fi
 fi
 echo ""
 
@@ -89,10 +158,18 @@ if [ -z "$method_defs" ]; then
 else
     for def_file in $method_defs; do
         sif_file="${def_file%.def}.sif"
-        echo "Building $sif_file from $def_file..."
-        apptainer build --force "$sif_file" "$def_file"
-        echo "✓ $sif_file built successfully"
-        echo ""
+        if [ "$QUIET" = true ]; then
+            echo -n "Building $sif_file..."
+            apptainer build --force --silent "$sif_file" "$def_file" > /dev/null 2>&1 &
+            spinner $!
+            wait $!
+            echo " ✓"
+        else
+            echo "Building $sif_file from $def_file..."
+            apptainer build --force "$sif_file" "$def_file"
+            echo "✓ $sif_file built successfully"
+            echo ""
+        fi
     done
 fi
 

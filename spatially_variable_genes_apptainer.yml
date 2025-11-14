@@ -15,22 +15,28 @@ software_environments:
   python_base:
     description: "Python base environment with anndata for data loading"
     apptainer: envs/python_base_ob.sif
+    conda: envs/ob_example_clustering.yml
   boostgp:
     description: "BOOST-GP method environment"
     apptainer: envs/boostgp.sif
+    conda: envs/ob_example_clustering.yml
   random_ranking:
     description: "Random ranking control method"
     apptainer: envs/random_ranking.sif
+    conda: envs/ob_example_clustering.yml
   true_ranking:
     description: "True ranking control method"
     apptainer: envs/true_ranking.sif
+    conda: envs/ob_example_clustering.yml
   correlation:
     description: "Correlation metric environment"
     apptainer: envs/correlation.sif
+    conda: envs/ob_example_clustering.yml
   ## TODO: Uncomment when sif files are ready
   # gpcounts:
   #   description: "GPcounts method environment"
   #   apptainer: envs/gpcounts.sif
+  
   # moran_i:
   #   description: "Moran's I method environment"
   #   apptainer: envs/moran_i.sif
@@ -61,6 +67,7 @@ software_environments:
   spark_x:
     description: "SPARK-X method environment"
     apptainer: envs/spark_x.sif
+    conda: envs/ob_example_clustering.yml
   # spatialde:
   #   description: "SpatialDE method environment"
   #   apptainer: envs/spatialde.sif
@@ -107,7 +114,7 @@ stages:
 
       #   parameters:
       #     dataset_id: spatial_10x_visium/mouse_olfactory_bulb
-
+ 
       # - id: mouse_embryo
       #   name: "Mouse Embryo"
       #   software_environment: "python_base"

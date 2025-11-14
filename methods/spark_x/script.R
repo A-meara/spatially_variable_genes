@@ -38,7 +38,7 @@ input_data_path <- opt[["data.dataset"]]
 
 # Create output directory and construct output path
 dir.create(opt$output_dir, showWarnings = FALSE, recursive = TRUE)
-output_file <- file.path(opt$output_dir, paste0(opt$name, ".h5ad"))
+output_file <- file.path(opt$output_dir, paste0(opt$name, ".predictions.h5ad"))
 
 # Load data
 cat("Reading data from:", input_data_path, "\n")

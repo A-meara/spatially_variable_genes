@@ -34,7 +34,7 @@ input_solution_path = getattr(args, 'data.solution')
 
 # Construct output path
 os.makedirs(args.output_dir, exist_ok=True)
-output_path = os.path.join(args.output_dir, f"{args.name}.h5ad")
+output_path = os.path.join(args.output_dir, f"{args.name}.predictions.h5ad")
 
 print(f'Reading solution from: {input_solution_path}', flush=True)
 input_solution = ad.read_h5ad(input_solution_path)

@@ -20,7 +20,7 @@ option_list <- list(
               help="Output directory path"),
   make_option(c("--name"), type="character",
               help="Dataset name"),
-  make_option(c("--data.dataset"), type="character",
+  make_option(c("--data_dataset"), type="character",
               help="Input dataset h5ad file path"),
   make_option(c("--n_iter"), type="integer", default=10,
               help="Number of iterations [default %default]")
@@ -30,8 +30,8 @@ option_list <- list(
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
 
-# Get input using list accessor for dotted argument
-input_data_path <- opt[["data.dataset"]]
+# Get input path
+input_data_path <- opt$data_dataset
 
 # Create output directory and construct output path
 dir.create(opt$output_dir, showWarnings = FALSE, recursive = TRUE)

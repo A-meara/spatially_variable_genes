@@ -14,17 +14,45 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 # Step 1: Build base images
-echo "Step 1/3: Building base images..."
+echo "Step 1/2: Building base images..."
 echo "-----------------------------------"
 
-echo "Building python_base_ob.sif..."
-apptainer build python_base_ob.sif python_base_ob.def
-echo "✓ python_base_ob.sif built successfully"
+# Check if python_base_ob.sif exists
+if [ -f "python_base_ob.sif" ]; then
+    echo "python_base_ob.sif already exists."
+    read -p "Do you want to rebuild it? (y/N): " rebuild_python
+    rebuild_python=${rebuild_python:-N}
+    if [[ $rebuild_python =~ ^[Yy]$ ]]; then
+        echo "Rebuilding python_base_ob.sif..."
+        apptainer build --force python_base_ob.sif python_base_ob.def
+        echo "✓ python_base_ob.sif rebuilt successfully"
+    else
+        echo "⊙ Skipping python_base_ob.sif (using existing)"
+    fi
+else
+    echo "Building python_base_ob.sif..."
+    apptainer build python_base_ob.sif python_base_ob.def
+    echo "✓ python_base_ob.sif built successfully"
+fi
 echo ""
 
-echo "Building r_base_ob.sif..."
-apptainer build r_base_ob.sif r_base_ob.def
-echo "✓ r_base_ob.sif built successfully"
+# Check if r_base_ob.sif exists
+if [ -f "r_base_ob.sif" ]; then
+    echo "r_base_ob.sif already exists."
+    read -p "Do you want to rebuild it? (y/N): " rebuild_r
+    rebuild_r=${rebuild_r:-N}
+    if [[ $rebuild_r =~ ^[Yy]$ ]]; then
+        echo "Rebuilding r_base_ob.sif..."
+        apptainer build --force r_base_ob.sif r_base_ob.def
+        echo "✓ r_base_ob.sif rebuilt successfully"
+    else
+        echo "⊙ Skipping r_base_ob.sif (using existing)"
+    fi
+else
+    echo "Building r_base_ob.sif..."
+    apptainer build r_base_ob.sif r_base_ob.def
+    echo "✓ r_base_ob.sif built successfully"
+fi
 echo ""
 
 # Step 2: Build R method-specific images

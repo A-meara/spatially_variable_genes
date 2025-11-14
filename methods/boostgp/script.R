@@ -1,37 +1,30 @@
 #!/usr/bin/env Rscript
-#
-# BOOST-GP method for spatially variable gene detection.
-#
-# Omnibenchmark standard arguments:
-#   --output_dir: Directory where outputs will be saved
-#   --name: Dataset name
-#   --data.dataset: Input dataset h5ad file
-#
-# Method-specific arguments:
-#   --n_iter: Number of iterations (default: 10)
+"BOOST-GP method for spatially variable gene detection.
+
+Bayesian modeling of spatial molecular profiling data via Gaussian process.
+
+Usage:
+  script.R --output_dir=<dir> --name=<name> --data.dataset=<file> [--n_iter=<n>]
+  script.R (-h | --help)
+
+Options:
+  --output_dir=<dir>     Output directory where files will be saved
+  --name=<name>          Dataset name
+  --data.dataset=<file>  Input dataset h5ad file path
+  --n_iter=<n>           Number of iterations [default: 10]
+  -h --help              Show this help message
+" -> doc
 
 library(RcppDist)
 library(anndata)
-library(optparse)
-
-# Define command-line arguments
-option_list <- list(
-  make_option(c("--output_dir"), type="character",
-              help="Output directory path"),
-  make_option(c("--name"), type="character",
-              help="Dataset name"),
-  make_option(c("--data_dataset"), type="character",
-              help="Input dataset h5ad file path"),
-  make_option(c("--n_iter"), type="integer", default=10,
-              help="Number of iterations [default %default]")
-)
+library(docopt)
 
 # Parse arguments
-opt_parser <- OptionParser(option_list=option_list)
-opt <- parse_args(opt_parser)
+opt <- docopt(doc)
 
 # Get input path
-input_data_path <- opt$data_dataset
+input_data_path <- opt$data.dataset
+n_iter <- as.integer(opt$n_iter)
 
 # Create output directory and construct output path
 dir.create(opt$output_dir, showWarnings = FALSE, recursive = TRUE)
@@ -54,8 +47,8 @@ loc <- as.data.frame(adata$obsm[["spatial"]])
 rownames(loc) <- adata$obs_names
 colnames(loc) <- c("x", "y")
 
-cat("Running BOOST-GP with", opt$n_iter, "iterations\n")
-df <- as.data.frame(boost.gp(Y = counts, loc = loc, iter = opt$n_iter, burn = 5))
+cat("Running BOOST-GP with", n_iter, "iterations\n")
+df <- as.data.frame(boost.gp(Y = counts, loc = loc, iter = n_iter, burn = 5))
 
 # Format output
 df$feature_id <- rownames(df)

@@ -1,40 +1,31 @@
 #!/usr/bin/env Rscript
-#
-# SPARK-X method for spatially variable gene detection.
-#
-# SPARK-X is a non-parametric method for rapid and effective detection of
-# spatially expressed genes in large spatial transcriptomic studies.
-#
-# Omnibenchmark standard arguments:
-#   --output_dir: Directory where outputs will be saved
-#   --name: Dataset name
-#   --data.dataset: Input dataset h5ad file
-#
-# Method-specific arguments:
-#   --num_cores: Number of CPU cores to use (default: 4)
+"SPARK-X method for spatially variable gene detection.
+
+SPARK-X is a non-parametric method for rapid and effective detection of
+spatially expressed genes in large spatial transcriptomic studies.
+
+Usage:
+  script.R --output_dir=<dir> --name=<name> --data.dataset=<file> [--num_cores=<n>]
+  script.R (-h | --help)
+
+Options:
+  --output_dir=<dir>     Output directory where files will be saved
+  --name=<name>          Dataset name
+  --data.dataset=<file>  Input dataset h5ad file path
+  --num_cores=<n>        Number of CPU cores to use [default: 4]
+  -h --help              Show this help message
+" -> doc
 
 suppressMessages(library(SPARK))
 suppressMessages(library(anndata))
-suppressMessages(library(optparse))
-
-# Define command-line arguments
-option_list <- list(
-  make_option(c("--output_dir"), type="character",
-              help="Output directory path"),
-  make_option(c("--name"), type="character",
-              help="Dataset name"),
-  make_option(c("--data_dataset"), type="character",
-              help="Input dataset h5ad file path"),
-  make_option(c("--num_cores"), type="integer", default=4,
-              help="Number of CPU cores to use [default %default]")
-)
+suppressMessages(library(docopt))
 
 # Parse arguments
-opt_parser <- OptionParser(option_list=option_list)
-opt <- parse_args(opt_parser)
+opt <- docopt(doc)
 
 # Get input path
-input_data_path <- opt$data_dataset
+input_data_path <- opt$data.dataset
+num_cores <- as.integer(opt$num_cores)
 
 # Create output directory and construct output path
 dir.create(opt$output_dir, showWarnings = FALSE, recursive = TRUE)
@@ -55,8 +46,8 @@ rownames(info) <- colnames(counts)
 colnames(info) <- c("x", "y")
 
 # Run SPARK-X
-cat("Running SPARK-X with", opt$num_cores, "cores\n")
-sparkX <- sparkx(counts, info[, 1:2], numCores = opt$num_cores, option = "mixture")
+cat("Running SPARK-X with", num_cores, "cores\n")
+sparkX <- sparkx(counts, info[, 1:2], numCores = num_cores, option = "mixture")
 
 # Format output
 cat("Processing results\n")

@@ -36,7 +36,7 @@ input_solution_path = getattr(args, 'data.solution')
 
 # Construct output path
 os.makedirs(args.output_dir, exist_ok=True)
-output_path = os.path.join(args.output_dir, f"{args.name}.h5ad")
+output_path = os.path.join(args.output_dir, f"{args.name}.scores.h5ad")
 
 print(f'Reading method predictions from: {input_method_path}', flush=True)
 input_method = ad.read_h5ad(input_method_path)

@@ -67,20 +67,32 @@ def main():
         script_path, script_type = find_component_script(component_path)
         print(f"[Dispatcher] Found {script_type} script: {script_path}", flush=True)
 
-        # Only true_ranking and metrics need --data.solution, filter it out for other methods
-        if 'true_ranking' not in component_path and 'metrics' not in component_path:
-            filtered_args = []
-            skip_next = False
-            for arg in remaining_args:
-                if skip_next:
-                    skip_next = False
+        # Filter arguments based on component type
+        filtered_args = []
+        skip_next = False
+
+        for arg in remaining_args:
+            if skip_next:
+                skip_next = False
+                continue
+
+            # Remove --data.solution for methods (except true_ranking) and data_loader
+            if arg == '--data.solution':
+                if 'true_ranking' not in component_path and 'metrics' not in component_path:
+                    skip_next = True
+                    print(f"[Dispatcher] Removing --data.solution (not needed by this component)", flush=True)
                     continue
-                if arg == '--data.solution':
-                    skip_next = True  # Skip the value too
-                    print(f"[Dispatcher] Removing --data.solution (not needed by this method)", flush=True)
+
+            # Remove --name for metric collectors
+            if arg == '--name':
+                if 'metric_collector' in component_path:
+                    skip_next = True
+                    print(f"[Dispatcher] Removing --name (not needed by metric collector)", flush=True)
                     continue
-                filtered_args.append(arg)
-            remaining_args = filtered_args
+
+            filtered_args.append(arg)
+
+        remaining_args = filtered_args
 
         # Build command based on script type
         if script_type == "python":

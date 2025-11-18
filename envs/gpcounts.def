@@ -10,7 +10,7 @@ From: python_base_ob.sif
         tensorflow-probability \
         tensorflow[and-cuda] \
         gpflow \
-        scipy==1.9.1
+        scipy==1.9.2
 
     # Clone and install RobustGP and GPcounts
     git clone https://github.com/markvdw/RobustGP.git /opt/RobustGP

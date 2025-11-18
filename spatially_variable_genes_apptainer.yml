@@ -103,7 +103,7 @@ stages:
         parameters:
           ## uncomment datasets when ready to run full benchmark
 
-          ## spatial_10x_visium (28 datasets)
+          ## spatial_10x_visium (20 datasets)
           - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--dataset_name", "mouse_brain_coronal_section1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart", "--dataset_name", "human_heart", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_brain_cancer", "--dataset_name", "human_brain_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
@@ -112,10 +112,6 @@ stages:
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_cerebellum", "--dataset_name", "human_cerebellum", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_cervical_cancer", "--dataset_name", "human_cervical_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_colorectal_cancer", "--dataset_name", "human_colorectal_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_cortex_1", "--dataset_name", "human_cortex_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_cortex_2", "--dataset_name", "human_cortex_2", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_cortex_3", "--dataset_name", "human_cortex_3", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_cortex_4", "--dataset_name", "human_cortex_4", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart_myocardial_infarction_1", "--dataset_name", "human_heart_myocardial_infarction_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart_myocardial_infarction_2", "--dataset_name", "human_heart_myocardial_infarction_2", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_intestinal_cancer", "--dataset_name", "human_intestinal_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
@@ -124,9 +120,7 @@ stages:
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_lymph_node", "--dataset_name", "human_lymph_node", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_normal_prostate", "--dataset_name", "human_normal_prostate", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_prostate_cancer", "--dataset_name", "human_prostate_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain", "--dataset_name", "mouse_brain", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_cerebellum", "--dataset_name", "mouse_cerebellum", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_cortex", "--dataset_name", "mouse_cortex", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_skin_melanoma", "--dataset_name", "human_skin_melanoma", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_embryo", "--dataset_name", "mouse_embryo", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_kidney_v1", "--dataset_name", "mouse_kidney_v1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_olfactory_bulb", "--dataset_name", "mouse_olfactory_bulb", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
@@ -135,10 +129,13 @@ stages:
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_xenium/human_colon_cancer", "--dataset_name", "human_colon_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_xenium/mouse_brain", "--dataset_name", "mouse_brain", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
-          ## spatial_dbit_seq (3 datasets)
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/human_tonsil", "--dataset_name", "human_tonsil", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_cortex", "--dataset_name", "mouse_cortex", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_embryo", "--dataset_name", "mouse_embryo", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          ## spatial_dbit_seq (6 datasets)
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_e10_brain", "--dataset_name", "mouse_e10_brain", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_e10_eye", "--dataset_name", "mouse_e10_eye", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_e10_whole_body", "--dataset_name", "mouse_e10_whole_body", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_e11_1", "--dataset_name", "mouse_e11_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_e11_2", "--dataset_name", "mouse_e11_2", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_dbit_seq/mouse_e11_lower_body", "--dataset_name", "mouse_e11_lower_body", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
           ## spatial_merfish (5 datasets)
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_merfish/human_cortex_1", "--dataset_name", "human_cortex_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
@@ -148,12 +145,14 @@ stages:
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_merfish/mouse_cortex", "--dataset_name", "mouse_cortex", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
           ## spatial_seqfish (1 dataset)
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_seqfish/mouse_embryo", "--dataset_name", "mouse_embryo", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_seqfish/mouse_organogenesis", "--dataset_name", "mouse_organogenesis", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
-          ## spatial_slideseq_v2 (3 datasets)
+          ## spatial_slideseq_v2 (5 datasets)
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_slideseq_v2/mouse_cerebellum", "--dataset_name", "mouse_cerebellum", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_slideseq_v2/mouse_hippocampus", "--dataset_name", "mouse_hippocampus", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_slideseq_v2/mouse_kidney", "--dataset_name", "mouse_kidney", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_slideseq_v2/mouse_cortex", "--dataset_name", "mouse_cortex", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_slideseq_v2/mouse_hippocampus_puck", "--dataset_name", "mouse_hippocampus_puck", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_slideseq_v2/mouse_olfactory_bulb_puck", "--dataset_name", "mouse_olfactory_bulb_puck", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_slideseq_v2/mouse_somatosensory_cortex_puck", "--dataset_name", "mouse_somatosensory_cortex_puck", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
           ## spatial_slide_tags (4 datasets)
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_slide_tags/human_cortex", "--dataset_name", "human_cortex", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
@@ -161,13 +160,16 @@ stages:
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_slide_tags/human_tonsil", "--dataset_name", "human_tonsil", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_slide_tags/mouse_embryo", "--dataset_name", "mouse_embryo", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
-          ## spatial_star_map (1 dataset)
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_star_map/mouse_cortex", "--dataset_name", "mouse_cortex", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          ## spatial_star_map (2 datasets)
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_star_map/mouse_brain_2d_zstep10_0", "--dataset_name", "mouse_brain_2d_zstep10_0", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_star_map/mouse_brain_2d_zstep15_0", "--dataset_name", "mouse_brain_2d_zstep15_0", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
-          ## spatial_stereo_seq (3 datasets)
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/drosophila_embryo_1", "--dataset_name", "drosophila_embryo_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/drosophila_embryo_2", "--dataset_name", "drosophila_embryo_2", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/mouse_brain", "--dataset_name", "mouse_brain", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          ## spatial_stereo_seq (5 datasets)
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/drosophila_embryo_e10", "--dataset_name", "drosophila_embryo_e10", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/drosophila_embryo_e5_6", "--dataset_name", "drosophila_embryo_e5_6", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/drosophila_embryo_e6_3", "--dataset_name", "drosophila_embryo_e6_3", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/drosophila_embryo_e7", "--dataset_name", "drosophila_embryo_e7", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          # - values: ["--component", "data_loader", "--dataset_id", "spatial_stereo_seq/drosophila_embryo_e9_1", "--dataset_name", "drosophila_embryo_e9_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
 
 
     ## Data stage outputs

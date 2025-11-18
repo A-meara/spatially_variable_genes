@@ -1,0 +1,14 @@
+Bootstrap: localimage
+From: r_base_ob.sif
+
+%post
+    # Install SPARK from GitHub
+    Rscript -e "devtools::install_github('xzhoulab/SPARK')"
+
+%labels
+    Author OpenProblems/Aidan Meara
+    Version 1.0.0
+
+%help
+    SPARK method for spatially variable gene detection
+    Based on openproblems/base_r:1.0.0

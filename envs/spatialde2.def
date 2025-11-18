@@ -1,0 +1,28 @@
+Bootstrap: localimage
+From: python_base_ob.sif
+
+%post
+    # Install system dependencies
+    apt-get update && apt-get install -y \
+        libhdf5-dev \
+        cmake
+
+    # Clone SpatialDE2
+    git clone https://github.com/PMBio/SpatialDE.git /opt/SpatialDE2
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        patsy \
+        /opt/SpatialDE2
+
+    # Clean up
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%labels
+    Author OpenProblems/Aidan Meara
+    Version 1.0.0
+
+%help
+    SpatialDE2 method for spatially variable gene detection
+    Based on openproblems/base_python:1.0.0

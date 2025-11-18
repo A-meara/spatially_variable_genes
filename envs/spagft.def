@@ -1,0 +1,37 @@
+Bootstrap: docker
+From: python:3.10
+
+%post
+    # Install system dependencies
+    apt-get update && apt-get install -y \
+        git \
+        procps \
+        libhdf5-dev \
+        cmake
+
+    # Clone SpaGFT
+    git clone https://github.com/jxLiu-bio/SpaGFT.git /opt/SpaGFT
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        h5py \
+        numba==0.55.1 \
+        louvain==0.7.1 \
+        chardet==5.1.0 \
+        charset-normalizer==3.1.0 \
+        anndata \
+        /opt/SpaGFT \
+        mizani==0.9.3 \
+        pyyaml
+
+    # Clean up
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%labels
+    Author OpenProblems/Aidan Meara
+    Version 1.0.0
+
+%help
+    SpaGFT method for spatially variable gene detection
+    Based on python:3.10

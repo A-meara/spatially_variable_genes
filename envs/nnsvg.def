@@ -1,0 +1,15 @@
+Bootstrap: localimage
+From: r_base_ob.sif
+
+%post
+    # Install R packages for nnSVG
+    Rscript -e "install.packages(c('dplyr'), repos='https://cloud.r-project.org/')"
+    Rscript -e "BiocManager::install(c('SpatialExperiment', 'scran', 'nnSVG'))"
+
+%labels
+    Author OpenProblems/Aidan Meara
+    Version 1.0.0
+
+%help
+    nnSVG method for spatially variable gene detection
+    Based on openproblems/base_r:1.0.0

@@ -1,0 +1,29 @@
+Bootstrap: localimage
+From: python_base_ob.sif
+
+%post
+    # Install git
+    apt-get update && apt-get install -y git
+
+    # Clone SpatialDE
+    git clone https://github.com/Teichlab/SpatialDE.git /opt/SpatialDE
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        /opt/SpatialDE/Python-module \
+        scanpy==1.9.8 \
+        pandas==2.2.1 \
+        numpy==1.26.4 \
+        scipy==1.11.4
+
+    # Clean up
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%labels
+    Author OpenProblems/Aidan Meara
+    Version 1.0.0
+
+%help
+    SpatialDE method for spatially variable gene detection
+    Based on openproblems/base_python:1.0.0

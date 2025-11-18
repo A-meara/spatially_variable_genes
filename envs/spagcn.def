@@ -1,0 +1,31 @@
+Bootstrap: localimage
+From: python_base_ob.sif
+
+%post
+    # Install system dependencies
+    apt-get update && apt-get install -y \
+        git \
+        libhdf5-dev \
+        cmake
+
+    # Clone SpaGCN
+    git clone https://github.com/jianhuupenn/SpaGCN.git /opt/SpaGCN
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        "numpy<2.0" \
+        anndata==0.8.0 \
+        scipy==1.13.1 \
+        /opt/SpaGCN/SpaGCN_package
+
+    # Clean up
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%labels
+    Author OpenProblems/Aidan Meara
+    Version 1.0.0
+
+%help
+    SpaGCN method for spatially variable gene detection
+    Based on openproblems/base_python:1.0.0

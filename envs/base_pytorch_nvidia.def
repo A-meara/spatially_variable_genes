@@ -19,14 +19,14 @@ From: nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04
         && rm -rf /var/lib/apt/lists/*
 
     # Install PyTorch with CUDA support
-    pip install --no-cache-dir \
+    pip install --no-cache-dir --break-system-packages \
         torch==2.6.0 \
         torchvision==0.20.0 \
         torchaudio==2.6.0 \
         --index-url https://download.pytorch.org/whl/cu126
 
     # Install Python packages
-    pip install --no-cache-dir \
+    pip install --no-cache-dir --break-system-packages \
         "anndata~=0.11.0" \
         "scanpy~=1.11.0" \
         pyyaml \
@@ -34,7 +34,7 @@ From: nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04
         jsonschema
 
     # Install openproblems-bio/core package from GitHub
-    pip install --no-cache-dir \
+    pip install --no-cache-dir --break-system-packages \
         "git+https://github.com/openproblems-bio/core.git#subdirectory=packages/python/openproblems"
 
 %environment

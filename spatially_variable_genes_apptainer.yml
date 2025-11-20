@@ -32,48 +32,58 @@ software_environments:
     description: "Correlation metric environment"
     apptainer: envs/python_base_ob.sif
     conda: envs/ob_example_clustering.yml
-  ## TODO: Uncomment when sif files are ready
-  # gpcounts:
-  #   description: "GPcounts method environment"
-  #   apptainer: envs/gpcounts.sif
-  
-  # moran_i:
-  #   description: "Moran's I method environment"
-  #   apptainer: envs/moran_i.sif
-  # nnsvg:
-  #   description: "nnSVG method environment"
-  #   apptainer: envs/nnsvg.sif
-  # scgco:
-  #   description: "scGCO method environment"
-  #   apptainer: envs/scgco.sif
-  # sepal:
-  #   description: "Sepal method environment"
-  #   apptainer: envs/sepal.sif
-  # somde:
-  #   description: "SomDE method environment"
-  #   apptainer: envs/somde.sif
-  # spagcn:
-  #   description: "SpaGCN method environment"
-  #   apptainer: envs/spagcn.sif
-  # spagft:
-  #   description: "SpaGFT method environment"
-  #   apptainer: envs/spagft.sif
-  # spanve:
-  #   description: "SPANVE method environment"
-  #   apptainer: envs/spanve.sif
-  # spark:
-  #   description: "SPARK method environment"
-  #   apptainer: envs/spark.sif
+  gpcounts:
+    description: "GPcounts method environment"
+    apptainer: envs/gpcounts.sif
+    conda: envs/ob_example_clustering.yml
+  moran_i:
+    description: "Moran's I method environment"
+    apptainer: envs/moran_i.sif
+    conda: envs/ob_example_clustering.yml
+  nnsvg:
+    description: "nnSVG method environment"
+    apptainer: envs/nnsvg.sif
+    conda: envs/ob_example_clustering.yml
+  scgco:
+    description: "scGCO method environment"
+    apptainer: envs/scgco.sif
+    conda: envs/ob_example_clustering.yml
+  sepal:
+    description: "Sepal method environment"
+    apptainer: envs/sepal.sif
+    conda: envs/ob_example_clustering.yml
+  somde:
+    description: "SomDE method environment"
+    apptainer: envs/somde.sif
+    conda: envs/ob_example_clustering.yml
+  spagcn:
+    description: "SpaGCN method environment"
+    apptainer: envs/spagcn.sif
+    conda: envs/ob_example_clustering.yml
+  spagft:
+    description: "SpaGFT method environment"
+    apptainer: envs/spagft.sif
+    conda: envs/ob_example_clustering.yml
+  spanve:
+    description: "SPANVE method environment"
+    apptainer: envs/spanve.sif
+    conda: envs/ob_example_clustering.yml
+  spark:
+    description: "SPARK method environment"
+    apptainer: envs/spark.sif
+    conda: envs/ob_example_clustering.yml
   spark_x:
     description: "SPARK-X method environment"
     apptainer: envs/spark_x.sif
     conda: envs/ob_example_clustering.yml
-  # spatialde:
-  #   description: "SpatialDE method environment"
-  #   apptainer: envs/spatialde.sif
-  # spatialde2:
-  #   description: "SpatialDE2 method environment"
-  #   apptainer: envs/spatialde2.sif
+  spatialde:
+    description: "SpatialDE method environment"
+    apptainer: envs/spatialde.sif
+    conda: envs/ob_example_clustering.yml
+  spatialde2:
+    description: "SpatialDE2 method environment"
+    apptainer: envs/spatialde2.sif
+    conda: envs/ob_example_clustering.yml
 
 ## Metric collectors - aggregate scores from all metrics, methods, and datasets
 metric_collectors:
@@ -211,24 +221,26 @@ stages:
         parameters:
           - values: ["--component", "methods/boostgp", "--n_iter", "10"]
 
-      # - id: nnsvg
-      #   name: "nnSVG"
-      #   software_environment: "nnsvg"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/nnsvg
-      #     commit: main
+      - id: nnsvg
+        name: "nnSVG"
+        software_environment: "nnsvg"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/nnsvg", "--n_threads", "1"]
 
-
-      # - id: spark
-      #   name: "SPARK"
-      #   software_environment: "spark"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/spark
-      #     commit: main
-
+      - id: spark
+        name: "SPARK"
+        software_environment: "spark"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/spark", "--num_cores", "1"]
 
       - id: spark_x
-        name: "SPARK-X" 
+        name: "SPARK-X"
         software_environment: "spark_x"
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
@@ -236,91 +248,96 @@ stages:
         parameters:
           - values: ["--component", "methods/spark_x", "--num_cores", "4"]
 
-      ## TODO: Uncomment additional methods when sif files are ready
-      # ## Python-based methods
-      # - id: gpcounts
-      #   name: "GPcounts"
-      #   software_environment: "gpcounts"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/gpcounts
-      #     commit: main
+      ## Python-based methods
+      - id: gpcounts
+        name: "GPcounts"
+        software_environment: "gpcounts"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/gpcounts"]
 
+      - id: moran_i
+        name: "Moran's I"
+        software_environment: "moran_i"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/moran_i", "--coord_type_moran_i", "generic"]
 
-      # - id: moran_i
-      #   name: "Moran's I"
-      #   software_environment: "moran_i"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/moran_i
-      #     commit: main
+      - id: scgco
+        name: "scGCO"
+        software_environment: "scgco"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/scgco"]
 
-      #   parameters:
-      #     coord_type: generic
+      - id: sepal
+        name: "Sepal"
+        software_environment: "sepal"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/sepal", "--coord_type_sepal", "grid", "--max_neighs_sepal", "6"]
 
-      # - id: scgco
-      #   name: "scGCO"
-      #   software_environment: "scgco"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/scgco
-      #     commit: main
+      - id: somde
+        name: "SomDE"
+        software_environment: "somde"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/somde"]
 
+      - id: spagcn
+        name: "SpaGCN"
+        software_environment: "spagcn"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/spagcn"]
 
-      # - id: sepal
-      #   name: "Sepal"
-      #   software_environment: "sepal"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/sepal
-      #     commit: main
+      - id: spagft
+        name: "SpaGFT"
+        software_environment: "spagft"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/spagft"]
 
-      #   parameters:
-      #     coord_type: generic
-      #     max_neighs: 6
+      - id: spanve
+        name: "SPANVE"
+        software_environment: "spanve"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/spanve"]
 
-      # - id: somde
-      #   name: "SomDE"
-      #   software_environment: "somde"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/somde
-      #     commit: main
+      - id: spatialde
+        name: "SpatialDE"
+        software_environment: "spatialde"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/spatialde"]
 
-
-      # - id: spagcn
-      #   name: "SpaGCN"
-      #   software_environment: "spagcn"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/spagcn
-      #     commit: main
-
-
-      # - id: spagft
-      #   name: "SpaGFT"
-      #   software_environment: "spagft"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/spagft
-      #     commit: main
-
-
-      # - id: spanve
-      #   name: "SPANVE"
-      #   software_environment: "spanve"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/spanve
-      #     commit: main
-
-
-      # - id: spatialde
-      #   name: "SpatialDE"
-      #   software_environment: "spatialde"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/spatialde
-      #     commit: main
-
-
-      # - id: spatialde2
-      #   name: "SpatialDE2"
-      #   software_environment: "spatialde2"
-      #   repository:
-      #     url: https://github.com/A-meara/spatially_variable_genes/methods/spatialde2
-      #     commit: main
+      - id: spatialde2
+        name: "SpatialDE2"
+        software_environment: "spatialde2"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/spatialde2"]
 
 
     ## Methods consume data stage outputs

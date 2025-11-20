@@ -33,66 +33,51 @@ cd "$SCRIPT_DIR"
 echo "Step 1/2: Building base images..."
 echo "-----------------------------------"
 
-# Check if python_base_ob.sif exists
-if [ -f "python_base_ob.sif" ]; then
-    echo "python_base_ob.sif already exists."
-    if [ "$NEW_ONLY" = true ]; then
-        echo "⊙ Skipping python_base_ob.sif (--new-only mode)"
-    elif [ "$AUTO_YES" = true ]; then
-        echo "Auto-rebuild mode: rebuilding python_base_ob.sif..."
-        apptainer build --force python_base_ob.sif python_base_ob.def
-        echo "✓ python_base_ob.sif rebuilt successfully"
-    else
-        read -p "Do you want to rebuild it? (y/N): " rebuild_python
-        rebuild_python=${rebuild_python:-N}
-        if [[ $rebuild_python =~ ^[Yy]$ ]]; then
-            echo "Rebuilding python_base_ob.sif..."
-            apptainer build --force python_base_ob.sif python_base_ob.def
-            echo "✓ python_base_ob.sif rebuilt successfully"
-        else
-            echo "⊙ Skipping python_base_ob.sif (using existing)"
-        fi
-    fi
-else
-    echo "Building python_base_ob.sif..."
-    apptainer build python_base_ob.sif python_base_ob.def
-    echo "✓ python_base_ob.sif built successfully"
-fi
-echo ""
+# Function to build a base image
+build_base_image() {
+    local base_name=$1
+    local def_file="${base_name}.def"
+    local sif_file="${base_name}.sif"
 
-# Check if r_base_ob.sif exists
-if [ -f "r_base_ob.sif" ]; then
-    echo "r_base_ob.sif already exists."
-    if [ "$NEW_ONLY" = true ]; then
-        echo "⊙ Skipping r_base_ob.sif (--new-only mode)"
-    elif [ "$AUTO_YES" = true ]; then
-        echo "Auto-rebuild mode: rebuilding r_base_ob.sif..."
-        apptainer build --force r_base_ob.sif r_base_ob.def
-        echo "✓ r_base_ob.sif rebuilt successfully"
-    else
-        read -p "Do you want to rebuild it? (y/N): " rebuild_r
-        rebuild_r=${rebuild_r:-N}
-        if [[ $rebuild_r =~ ^[Yy]$ ]]; then
-            echo "Rebuilding r_base_ob.sif..."
-            apptainer build --force r_base_ob.sif r_base_ob.def
-            echo "✓ r_base_ob.sif rebuilt successfully"
+    if [ -f "$sif_file" ]; then
+        echo "$sif_file already exists."
+        if [ "$NEW_ONLY" = true ]; then
+            echo "⊙ Skipping $sif_file (--new-only mode)"
+        elif [ "$AUTO_YES" = true ]; then
+            echo "Auto-rebuild mode: rebuilding $sif_file..."
+            apptainer build --force "$sif_file" "$def_file"
+            echo "✓ $sif_file rebuilt successfully"
         else
-            echo "⊙ Skipping r_base_ob.sif (using existing)"
+            read -p "Do you want to rebuild it? (y/N): " rebuild_response
+            rebuild_response=${rebuild_response:-N}
+            if [[ $rebuild_response =~ ^[Yy]$ ]]; then
+                echo "Rebuilding $sif_file..."
+                apptainer build --force "$sif_file" "$def_file"
+                echo "✓ $sif_file rebuilt successfully"
+            else
+                echo "⊙ Skipping $sif_file (using existing)"
+            fi
         fi
+    else
+        echo "Building $sif_file..."
+        apptainer build "$sif_file" "$def_file"
+        echo "✓ $sif_file built successfully"
     fi
-else
-    echo "Building r_base_ob.sif..."
-    apptainer build r_base_ob.sif r_base_ob.def
-    echo "✓ r_base_ob.sif built successfully"
-fi
-echo ""
+    echo ""
+}
+
+# Build base images in order
+build_base_image "python_base_ob"
+build_base_image "r_base_ob"
+build_base_image "base_pytorch_nvidia"
+build_base_image "base_tensorflow_nvidia"
 
 # Step 2: Build method-specific images (anything that depends on base images)
 echo "Step 2/2: Building method-specific images..."
 echo "-----------------------------------"
 
 # Find all .def files that are NOT base images
-method_defs=$(find . -maxdepth 1 -name "*.def" ! -name "python_base_ob.def" ! -name "r_base_ob.def" -exec basename {} \; | sort)
+method_defs=$(find . -maxdepth 1 -name "*.def" ! -name "python_base_ob.def" ! -name "r_base_ob.def" ! -name "base_pytorch_nvidia.def" ! -name "base_tensorflow_nvidia.def" -exec basename {} \; | sort)
 
 if [ -z "$method_defs" ]; then
     echo "No method-specific .def files found"

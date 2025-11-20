@@ -1,8 +1,8 @@
 Bootstrap: localimage
-From: python_base_ob.sif
+From: base_tensorflow_nvidia.sif
 
 %post
-    # Install git and dependencies
+    # Install git (already in base but ensure it's there)
     apt-get update && apt-get install -y git
 
     # Install Python packages for GPcounts
@@ -10,7 +10,7 @@ From: python_base_ob.sif
         tensorflow-probability \
         tensorflow[and-cuda] \
         gpflow \
-        scipy==1.9.2
+        scipy==1.9.1
 
     # Clone and install RobustGP and GPcounts
     git clone https://github.com/markvdw/RobustGP.git /opt/RobustGP
@@ -25,9 +25,7 @@ From: python_base_ob.sif
     rm -rf /var/lib/apt/lists/*
 
 %labels
-    Author OpenProblems/Aidan Meara
-    Version 1.0.0
-
-%help
-    GPcounts method for spatially variable gene detection
-    Based on openproblems/base_tensorflow_nvidia:1.0.0
+    Author "OpenProblems/Aidan Meara"
+    Version "1.0.0"
+    Description "GPcounts method for spatially variable gene detection"
+    BaseImage "base_tensorflow_nvidia.sif (TensorFlow 25.01, Python 3.12)"

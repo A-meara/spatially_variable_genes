@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/pytorch:24.12-py3
+
+%post
+    # Install apt packages
+    apt-get update && apt-get install -y \
+        procps \
+        git \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        "anndata~=0.11.0" \
+        "scanpy~=1.11.0" \
+        pyyaml \
+        requests \
+        jsonschema
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+
+%labels
+    Author "Aidan Meara"
+    Version "1.0"
+    Description "NVIDIA PyTorch 24.12 (Python 3.12, CUDA 12.6.3) with anndata preinstalled"
+    BaseImage "nvcr.io/nvidia/pytorch:24.12-py3"
+    Python "3.12"
+    PyTorch "2.6.0"
+    CUDA "12.6.3"

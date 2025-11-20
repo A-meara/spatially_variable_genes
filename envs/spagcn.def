@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: python_base_ob.sif
+From: base_pytorch_nvidia.sif
 
 %post
     # Install system dependencies
@@ -23,9 +23,7 @@ From: python_base_ob.sif
     rm -rf /var/lib/apt/lists/*
 
 %labels
-    Author OpenProblems/Aidan Meara
-    Version 1.0.0
-
-%help
-    SpaGCN method for spatially variable gene detection
-    Based on openproblems/base_python:1.0.0
+    Author "OpenProblems/Aidan Meara"
+    Version "1.0.0"
+    Description "SpaGCN method for spatially variable gene detection"
+    BaseImage "base_pytorch_nvidia.sif (PyTorch 2.6.0, Python 3.12)"

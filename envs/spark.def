@@ -2,8 +2,8 @@ Bootstrap: localimage
 From: r_base_ob.sif
 
 %post
-    # Install SPARK from GitHub
-    Rscript -e "devtools::install_github('xzhoulab/SPARK')"
+    # Install devtools if not already installed, then install SPARK from GitHub
+    Rscript -e "if (!require('devtools')) install.packages('devtools', repos='https://cloud.r-project.org/'); devtools::install_github('xzhoulab/SPARK')"
 
 %labels
     Author OpenProblems/Aidan Meara

@@ -12,10 +12,10 @@ From: python_base_ob.sif
     # Clone SpaGFT
     git clone https://github.com/jxLiu-bio/SpaGFT.git /opt/SpaGFT
 
-    # Install Python packages (remove version pins for Python 3.12 compatibility)
+    # Install Python packages
+    # Install SpaGFT first, which will pull in its required numba version
     pip install --no-cache-dir --break-system-packages \
         h5py \
-        numba \
         louvain \
         chardet \
         charset-normalizer \

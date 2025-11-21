@@ -3,7 +3,7 @@ From: python_base_ob.sif
 
 %post
     # Install Python packages for Sepal
-    pip install --no-cache-dir \
+    pip install --no-cache-dir --break-system-packages \
         pandas \
         squidpy
 

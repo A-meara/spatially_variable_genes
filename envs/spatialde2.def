@@ -11,7 +11,7 @@ From: python_base_ob.sif
     git clone https://github.com/PMBio/SpatialDE.git /opt/SpatialDE2
 
     # Install Python packages
-    pip install --no-cache-dir \
+    pip install --no-cache-dir --break-system-packages \
         patsy \
         /opt/SpatialDE2
 

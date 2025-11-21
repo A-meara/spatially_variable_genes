@@ -9,7 +9,7 @@ From: python_base_ob.sif
     git clone https://github.com/Teichlab/SpatialDE.git /opt/SpatialDE
 
     # Install Python packages
-    pip install --no-cache-dir \
+    pip install --no-cache-dir --break-system-packages \
         /opt/SpatialDE/Python-module \
         scanpy==1.9.8 \
         pandas==2.2.1 \

@@ -3,8 +3,7 @@ From: python_base_ob.sif
 
 %post
     # Install Python packages for SOMDE
-    # Use --no-build-isolation so somoclu can see numpy during build
-    pip install --no-cache-dir --break-system-packages --no-build-isolation \
+    pip install --no-cache-dir --break-system-packages \
         somde \
         scanpy \
         pandas \

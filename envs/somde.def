@@ -3,12 +3,12 @@ From: python_base_ob.sif
 
 %post
     # Install Python packages for SOMDE
-    pip install --no-cache-dir \
+    # Use --no-build-isolation so somoclu can see numpy during build
+    pip install --no-cache-dir --break-system-packages --no-build-isolation \
         somde \
-        scanpy==1.9.8 \
-        pandas==2.2.1 \
-        numpy==1.26.4 \
-        scipy==1.11.4
+        scanpy \
+        pandas \
+        scipy
 
     # Clean up
     apt-get clean

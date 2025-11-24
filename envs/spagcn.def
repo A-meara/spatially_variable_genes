@@ -12,7 +12,7 @@ From: python_base_ob.sif
     git clone https://github.com/jianhuupenn/SpaGCN.git /opt/SpaGCN
 
     # Fix deprecated .A attribute (replaced with .toarray() in modern scipy)
-    sed -i 's/\.A\>/\.toarray()/g' /opt/SpaGCN/SpaGCN_package/SpaGCN/SpaGCN.py
+    find /opt/SpaGCN/SpaGCN_package/SpaGCN/ -name "*.py" -exec sed -i 's/\.A\>/\.toarray()/g' {} \;
 
     # Install Python packages (including torch for SpaGCN)
     pip install --no-cache-dir --break-system-packages \

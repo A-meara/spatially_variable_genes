@@ -5,9 +5,13 @@ From: base_tensorflow_nvidia.sif
     # Install git (already in base but ensure it's there)
     apt-get update && apt-get install -y git
 
+    # Upgrade typing_extensions for compatibility with omnibenchmark/pydantic
+    pip install --no-cache-dir --break-system-packages --upgrade typing_extensions
+
     # Install Python packages for GPcounts
+    # Pin tensorflow-probability to 0.24.0 which is compatible with TensorFlow 2.17
     pip install --no-cache-dir --break-system-packages \
-        tensorflow-probability \
+        "tensorflow-probability==0.24.0" \
         tensorflow[and-cuda] \
         gpflow \
         scipy

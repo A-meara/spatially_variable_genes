@@ -1,5 +1,5 @@
-Bootstrap: localimage
-From: python_base_ob.sif
+Bootstrap: docker
+From: python:3.9.16
 
 %post
     # Install system dependencies
@@ -11,26 +11,27 @@ From: python_base_ob.sif
         gdal-bin \
         libgdal-dev
 
-    # Install base Python packages first (Python 3.12 compatible versions)
-    pip install --no-cache-dir --break-system-packages \
-        Cython \
-        numpy \
-        scipy
+    # Install base Python packages first (matching OP versions for pygco compatibility)
+    pip install --no-cache-dir \
+        Cython==0.29.33 \
+        numpy==1.23.5 \
+        scipy==1.9.1
 
     # Clone scGCO
     git clone https://github.com/lzj1769/scGCO_simple.git /opt/scGCO/scGCO_simple
 
-    # Install remaining Python packages (remove version pins for Python 3.12 compatibility)
-    pip install --no-cache-dir --break-system-packages \
-        h5py \
-        pandas \
-        parmap \
-        scanpy \
-        tqdm \
-        matplotlib \
-        scikit-learn \
+    # Install remaining Python packages (matching OP configuration)
+    pip install --no-cache-dir \
+        h5py==3.8.0 \
+        pandas==1.5.3 \
+        parmap==1.6.0 \
+        scanpy==1.9.3 \
+        tqdm==4.65.0 \
+        anndata==0.8.0 \
+        matplotlib==3.7.1 \
+        scikit-learn==1.2.2 \
         hdbscan \
-        seaborn \
+        seaborn==0.12.2 \
         pysal \
         pygco \
         shapely \
@@ -47,4 +48,4 @@ From: python_base_ob.sif
     Author "OpenProblems/Aidan Meara"
     Version "1.0.0"
     Description "scGCO method for spatially variable gene detection"
-    BaseImage "python_base_ob.sif (Python 3.12)"
+    BaseImage "python:3.9.16"

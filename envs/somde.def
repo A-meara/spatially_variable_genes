@@ -3,11 +3,23 @@ From: python_base_ob.sif
 
 %post
     # Install Python packages for SOMDE
+    # Install numpy and build dependencies first
+    # Pin scipy to version that still has scipy.misc.derivative (removed in 1.14+)
+    pip install --no-cache-dir --break-system-packages \
+        numpy \
+        "scipy<1.14" \
+        setuptools \
+        wheel \
+        Cython
+
+    # Install somoclu separately with --no-build-isolation so it can access numpy
+    pip install --no-cache-dir --break-system-packages --no-build-isolation somoclu
+
+    # Now install somde and other dependencies
     pip install --no-cache-dir --break-system-packages \
         somde \
         scanpy \
-        pandas \
-        scipy
+        pandas
 
     # Clean up
     apt-get clean

@@ -11,7 +11,9 @@ From: python_base_ob.sif
     git clone https://github.com/PMBio/SpatialDE.git /opt/SpatialDE2
 
     # Install Python packages
+    # Pin scipy to version that still has scipy.misc.derivative (removed in 1.14+)
     pip install --no-cache-dir --break-system-packages \
+        "scipy<1.14" \
         patsy \
         /opt/SpatialDE2
 

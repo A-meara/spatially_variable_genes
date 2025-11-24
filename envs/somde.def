@@ -21,10 +21,13 @@ From: python_base_ob.sif
         scanpy \
         pandas
 
-    # Fix somde's util.py - replace sp.arange and sp.array with np.arange and np.array
-    # (sp.arange doesn't exist in scipy, should be numpy)
-    sed -i 's/sp\.arange/np.arange/g' /usr/local/lib/python3.12/site-packages/somde/util.py
-    sed -i 's/sp\.array/np.array/g' /usr/local/lib/python3.12/site-packages/somde/util.py
+    # Fix somde's util.py - replace sp.<numpy_func> with np.<numpy_func>
+    # (these numpy functions were exposed in old scipy but no longer exist)
+    SOMDE_UTIL=$(python3 -c "import somde; import os; print(os.path.join(os.path.dirname(somde.__file__), 'util.py'))")
+    sed -i 's/sp\.arange/np.arange/g' "$SOMDE_UTIL"
+    sed -i 's/sp\.array/np.array/g' "$SOMDE_UTIL"
+    sed -i 's/sp\.argsort/np.argsort/g' "$SOMDE_UTIL"
+    sed -i 's/sp\.zeros_like/np.zeros_like/g' "$SOMDE_UTIL"
 
     # Clean up
     apt-get clean

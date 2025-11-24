@@ -13,9 +13,8 @@ From: python_base_ob.sif
     git clone https://github.com/jxLiu-bio/SpaGFT.git /opt/SpaGFT
 
     # Fix SpaGFT's setup.py to use compatible versions for Python 3.12
-    sed -i "s/numba==0.55.1/numba>=0.56.0/g" /opt/SpaGFT/setup.py
-    sed -i "s/networkx==2.8/networkx>=2.8/g" /opt/SpaGFT/setup.py
-    sed -i "s/scanpy==1.9.1/scanpy>=1.9.1/g" /opt/SpaGFT/setup.py
+    # Remove all strict version pins and use >= for flexibility
+    sed -i 's/==/>=/g' /opt/SpaGFT/setup.py
 
     # Install Python packages
     pip install --no-cache-dir --break-system-packages \

@@ -12,3 +12,7 @@ snakemake.log
 out/
 notebooks/
 *.vsh.yaml
+
+.cache/
+.keras/
+GPcounts_models/

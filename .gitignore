@@ -11,3 +11,4 @@ Snakefile
 snakemake.log
 out/
 notebooks/
+*.vsh.yaml

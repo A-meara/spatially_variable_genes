@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-scGCO method for spatially variable gene detection.
+scGCO wrapper for omnibenchmark - runs in Python 3.12.
 
-scGCO uses fast optimization of hidden Markov Random Fields with graph cuts
-to identify spatially variable genes with superior performance and scalability.
+This wrapper handles I/O in Python 3.12 (required by omnibenchmark),
+but calls the actual scGCO implementation in a Python 3.9 Singularity container.
 
 Omnibenchmark standard arguments:
   --output_dir: Directory where outputs will be saved
@@ -11,22 +11,13 @@ Omnibenchmark standard arguments:
   --data.dataset: Input dataset h5ad file
 """
 
-import warnings
-warnings.filterwarnings('ignore')
-
-import pandas as pd
-import anndata as ad
-import numpy as np
-import scipy
-import sys
-sys.path.append("/opt/scGCO")
-
-from scGCO_simple import *
+import subprocess
 import argparse
 import os
+import sys
 
-# Parse command line arguments
-parser = argparse.ArgumentParser(description='scGCO method for spatially variable gene detection')
+# Parse command line arguments (Python 3.12)
+parser = argparse.ArgumentParser(description='scGCO wrapper for spatially variable gene detection')
 parser.add_argument('--output_dir', type=str, required=True,
                     help='Output directory where files will be saved')
 parser.add_argument('--name', type=str, required=True,
@@ -36,56 +27,86 @@ parser.add_argument('--data.dataset', type=str, required=True,
 
 args = parser.parse_args()
 
-# Get input using getattr for dotted arguments
+# Get paths
 input_data_path = getattr(args, 'data.dataset')
-
-# Construct output path
-os.makedirs(args.output_dir, exist_ok=True)
 output_path = os.path.join(args.output_dir, f"{args.name}.predictions.h5ad")
 
-print(f'Reading input data from: {input_data_path}', flush=True)
-adata = ad.read_h5ad(input_data_path)
+# Create output directory
+os.makedirs(args.output_dir, exist_ok=True)
 
-counts = adata.layers["counts"]
-if scipy.sparse.issparse(counts):
-    counts = counts.todense()
+# Path to scgco singularity image
+# Check common locations
+SCGCO_SIF_LOCATIONS = [
+    os.environ.get('SCGCO_SIF'),
+    '/home/ameara/porting/spatially_variable_genes/envs/scgco.sif',
+    'envs/scgco.sif',
+    '../envs/scgco.sif',
+    '../../envs/scgco.sif',
+]
 
-data = pd.DataFrame(
-    counts,
-    columns=adata.var_names,
-    index=adata.obs_names
-)
+SCGCO_SIF = None
+for location in SCGCO_SIF_LOCATIONS:
+    if location and os.path.exists(location):
+        SCGCO_SIF = location
+        break
 
-print('Running scGCO', flush=True)
-data_norm = normalize_count_cellranger(data)
+if not SCGCO_SIF:
+    print(f"ERROR: scGCO Singularity image not found!", file=sys.stderr)
+    print(f"Searched locations:", file=sys.stderr)
+    for loc in SCGCO_SIF_LOCATIONS:
+        if loc:
+            print(f"  - {loc}", file=sys.stderr)
+    print(f"\nSet SCGCO_SIF environment variable to the correct path", file=sys.stderr)
+    sys.exit(1)
 
-exp = data.iloc[:, 0]
-locs = adata.obsm['spatial'].copy()
+print(f"Using scGCO container: {SCGCO_SIF}", flush=True)
+print(f"Input: {input_data_path}", flush=True)
+print(f"Output: {output_path}", flush=True)
 
-print('Creating graph with weight', flush=True)
-cellGraph = create_graph_with_weight(locs, exp)
-gmmDict = gmm_model(data_norm)
+# Get absolute paths for bind mounts
+input_abs = os.path.abspath(input_data_path)
+output_abs = os.path.abspath(output_path)
+input_dir = os.path.dirname(input_abs)
+output_dir = os.path.dirname(output_abs)
 
-print('Identifying spatial genes', flush=True)
-df = identify_spatial_genes(locs, data_norm, cellGraph, gmmDict)
+# Path to the implementation script inside the container
+SCGCO_SCRIPT = '/opt/scgco_impl.py'
 
-# Format output
-df = df.loc[adata.var_names][['fdr']]
-df = df.reset_index()
-df.columns = ['feature_id', 'pred_spatial_var_score']
+# Build singularity exec command
+cmd = [
+    'singularity', 'exec',
+    '--bind', f'{input_dir}:{input_dir}:ro',  # Bind input dir as read-only
+    '--bind', f'{output_dir}:{output_dir}:rw',  # Bind output dir as read-write
+    SCGCO_SIF,
+    'python3', SCGCO_SCRIPT,
+    '--input_data', input_abs,
+    '--output', output_abs,
+    '--name', args.name
+]
 
-# Transform the values via -log10 to make sure a bigger score represents a
-# higher spatial variation
-df['pred_spatial_var_score'] = -np.log10(df['pred_spatial_var_score'].tolist())
+print(f"Running scGCO via Singularity...", flush=True)
 
-output = ad.AnnData(
-    var=df,
-    uns={
-        'dataset_id': adata.uns['dataset_id'],
-        'method_id': 'scgco'
-    }
-)
+# Execute the scgco container
+try:
+    result = subprocess.run(
+        cmd,
+        check=True,
+        capture_output=True,
+        text=True
+    )
+    print(result.stdout, flush=True)
+    if result.stderr:
+        print(result.stderr, file=sys.stderr, flush=True)
 
-print(f"Writing output to: {output_path}", flush=True)
-output.write_h5ad(output_path, compression='gzip')
-print("Done!", flush=True)
+    print("scGCO completed successfully!", flush=True)
+
+except subprocess.CalledProcessError as e:
+    print(f"ERROR: scGCO failed with exit code {e.returncode}", file=sys.stderr)
+    if e.stdout:
+        print(f"STDOUT:\n{e.stdout}", file=sys.stderr)
+    if e.stderr:
+        print(f"STDERR:\n{e.stderr}", file=sys.stderr)
+    sys.exit(e.returncode)
+except FileNotFoundError:
+    print(f"ERROR: singularity command not found. Is Apptainer/Singularity installed?", file=sys.stderr)
+    sys.exit(1)

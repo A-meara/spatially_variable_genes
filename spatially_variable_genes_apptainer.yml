@@ -269,7 +269,7 @@ stages:
 
       - id: scgco
         name: "scGCO"
-        software_environment: "scgco"
+        software_environment: "python_base"
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
           commit: main

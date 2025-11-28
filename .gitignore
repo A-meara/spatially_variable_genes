@@ -10,3 +10,4 @@ scripts/
 Snakefile
 snakemake.log
 out/
+notebooks/

@@ -1,2 +1,0 @@
-# No additional requirements beyond standard library
-# anndata is not needed since we're just copying files

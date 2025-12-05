@@ -32,7 +32,10 @@ From: python:3.12
     make -C builddir
     make -C builddir install
     cd /
-    rm -rf /tmp/apptainer-${APPTAINER_VERSION}*
+    # Force remove build directory (may have protected files)
+    chmod -R u+w /tmp/apptainer-${APPTAINER_VERSION} 2>/dev/null || true
+    rm -rf /tmp/apptainer-${APPTAINER_VERSION} || true
+    rm -f /tmp/apptainer-${APPTAINER_VERSION}.tar.gz || true
 
     # Clean up Go (not needed at runtime)
     rm -rf /usr/local/go

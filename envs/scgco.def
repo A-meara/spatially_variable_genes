@@ -20,7 +20,7 @@ From: python:3.9.16
     # Clone scGCO
     git clone https://github.com/lzj1769/scGCO_simple.git /opt/scGCO/scGCO_simple
 
-    # Install remaining Python packages (matching OP configuration)
+    # Install remaining Python packages (matching OP configuration exactly)
     pip install --no-cache-dir \
         h5py==3.8.0 \
         pandas==1.5.3 \
@@ -32,10 +32,10 @@ From: python:3.9.16
         scikit-learn==1.2.2 \
         hdbscan \
         seaborn==0.12.2 \
-        pysal \
-        pygco \
-        shapely \
-        networkx \
+        pysal==2.0.0 \
+        pygco==0.0.16 \
+        shapely==2.0.1 \
+        networkx==2.5 \
         scikit-image \
         pyyaml \
         requests

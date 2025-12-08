@@ -16,3 +16,4 @@ notebooks/
 .cache/
 .keras/
 GPcounts_models/
+unused/

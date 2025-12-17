@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this module in your publication, please cite as below."
+type: software
+title: "Mark's fork/update of Aidan's OP SVGs all-in-one Module"
+abstract: |
+  A module created with OmniBenchmark for computational benchmarking of spatial variable gene detection from OP
+authors:
+  - family-names: "Meara"
+    given-names: "Aidan"
+    email: "ameara@student.ethz.ch"
+  - family-names: "Robinson"
+    given-names: "Mark"
+    email: "mark.robinson@mls.uzh.ch"
+date-released: "2025-12-17"
+version: "1.0.0"
+license: MIT
+url: "https://github.com/markrobinsonuzh/spatially_variable_genes"
+repository-code: "https://github.com/markrobinsonuzh/spatially_variable_genes"
+keywords:
+  - bioinformatics
+  - computational-biology
+  - benchmark
+  - omnibenchmark
+  - module
+references:
+  - title: "OP spatially variable genes Benchmark"
+    type: website
+    url: "https://openproblems.bio/benchmarks/spatially_variable_genes?version=v1.0.0"

@@ -1,12 +1,12 @@
 ## benchmark header info
 id: spatial_variable_genes_benchmark
 description: Benchmark for evaluating spatially variable gene detection methods on spatial transcriptomics data
-version: 1.0
+version: "1.0.1"
 benchmarker: "Aidan Meara"
 storage_api: S3
 ## S3 endpoint to share our benchmark results.
 storage: https://s3_object_storage_url.ch
-benchmark_yaml_spec: 0.01
+benchmark_yaml_spec: "0.01"
 software_backend: apptainer
 
 ## Software environment recipes associated to this benchmark.
@@ -108,14 +108,17 @@ stages:
         name: "my_data_loader"
         software_environment: "python_base"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
           ## uncomment datasets when ready to run full benchmark
+          - component: "data_loader"
+            data_source_dir: ["/home/mark/projects/omb/spatially_variable_genes/datasets"]
+            dataset_id: ["spatial_10x_visium/human_heart", "spatial_10x_visium/mouse_brain_coronal_section1"]
 
           ## spatial_10x_visium (20 datasets)
-          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--dataset_name", "mouse_brain_coronal_section1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart", "--dataset_name", "human_heart", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          #- values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--dataset_name", "mouse_brain_coronal_section1", "--data_source_dir", "/home/mark/projects/omb/aidan/spatially_variable_genes/datasets"]
+          #- values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart", "--dataset_name", "human_heart", "--data_source_dir", "/home/mark/projects/omb/aidan/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_brain_cancer", "--dataset_name", "human_brain_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_breast_cancer_1", "--dataset_name", "human_breast_cancer_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_breast_cancer_2", "--dataset_name", "human_breast_cancer_2", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
@@ -269,7 +272,7 @@ stages:
 
       - id: scgco
         name: "scGCO"
-        software_environment: "scgco"
+        software_environment: "python_base"
         repository:
           url: https://github.com/A-meara/spatially_variable_genes
           commit: main

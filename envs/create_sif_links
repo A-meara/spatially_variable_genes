@@ -1,0 +1,1 @@
+for f in `ls /home/mark/projects/omb/aidan/spatially_variable_genes/envs/*.sif`; do ln -s $f; done

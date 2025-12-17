@@ -108,7 +108,7 @@ stages:
         name: "my_data_loader"
         software_environment: "python_base"
         repository:
-          url: https://github.com/markobinsonuzh/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
           ## uncomment datasets when ready to run full benchmark
@@ -200,154 +200,161 @@ stages:
         name: "Random Ranking"
         software_environment: "random_ranking"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/random_ranking", "--seed", "42"]
+          - component: "methods/random_ranking"
+            seed: 42
 
       - id: true_ranking
         name: "True Ranking"
         software_environment: "true_ranking"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/true_ranking"]
+          - component: "methods/true_ranking"
 
       ## R-based methods
       - id: boostgp
         name: "BOOST-GP"
         software_environment: "boostgp"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/boostgp", "--n_iter", "10"]
+          - component: "methods/boostgp"
+            n_iter: 10 
 
       - id: nnsvg
         name: "nnSVG"
         software_environment: "nnsvg"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/nnsvg", "--n_threads", "1"]
+          - component: "methods/nnsvg"
+            n_threads: 1
 
       - id: spark
         name: "SPARK"
         software_environment: "spark"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spark", "--num_cores", "1"]
+          - component: "methods/spark"
+            num_cores: 1
 
       - id: spark_x
         name: "SPARK-X"
         software_environment: "spark_x"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spark_x", "--num_cores", "4"]
+          - component: "methods/spark_x"
+            num_cores: 4
 
       ## Python-based methods
       - id: gpcounts
         name: "GPcounts"
         software_environment: "gpcounts"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/gpcounts"]
+          - component: "methods/gpcounts"
 
       - id: moran_i
         name: "Moran's I"
         software_environment: "moran_i"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/moran_i", "--coord_type_moran_i", "generic"]
+          - component: "methods/moran_i"
+            coord_type_moran_i: "generic"
 
       - id: scgco
         name: "scGCO"
         software_environment: "python_base"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/scgco"]
+          - component: "methods/scgco"
 
       - id: sepal
         name: "Sepal"
         software_environment: "sepal"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/sepal", "--coord_type_sepal", "grid", "--max_neighs_sepal", "6"]
+          - component: "methods/sepal"
+            coord_type_sepal: "grid"
+            max_neighs_sepal: 6
 
       - id: somde
         name: "SomDE"
         software_environment: "somde"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/somde"]
+          - component: "methods/somde"
 
       - id: spagcn
         name: "SpaGCN"
         software_environment: "spagcn"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spagcn"]
+          - component: "methods/spagcn"
 
       - id: spagft
         name: "SpaGFT"
         software_environment: "spagft"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spagft"]
+          - component: "methods/spagft"
 
       - id: spanve
         name: "SPANVE"
         software_environment: "spanve"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spanve"]
+          - component: "methods/spanve"
 
       - id: spatialde
         name: "SpatialDE"
         software_environment: "spatialde"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spatialde"]
+          - component: "methods/spatialde"
 
       - id: spatialde2
         name: "SpatialDE2"
         software_environment: "spatialde2"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spatialde2"]
+          - component: "methods/spatialde2"
 
 
     ## Methods consume data stage outputs
     inputs:
-      - entries:
-          - data.dataset
-          - data.solution  # Needed for control methods
+      - data.dataset
+      - data.solution  # Needed for control methods
 
     ## Methods stage outputs
     outputs:
@@ -361,16 +368,15 @@ stages:
         name: "Kendall Correlation"
         software_environment: "correlation"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "metrics/correlation"]
+          - component: "metrics/correlation"
 
     ## Metrics consume method predictions and ground truth
     inputs:
-      - entries:
-          - methods.predictions
-          - data.solution
+      - methods.predictions
+      - data.solution
 
     ## Metrics stage outputs
     outputs:

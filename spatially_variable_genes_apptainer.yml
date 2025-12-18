@@ -60,6 +60,10 @@ software_environments:
     description: "SpaGCN method environment"
     apptainer: envs/spagcn.sif
     conda: envs/ob_example_clustering.yml
+  spagcn-pinned:
+    description: "SpaGCN method environment w/ Python package versions pinned"
+    apptainer: envs/spagcn-pinned.sif
+    conda: envs/ob_example_clustering.yml
   spagft:
     description: "SpaGFT method environment"
     apptainer: envs/spagft.sif
@@ -114,7 +118,7 @@ stages:
           ## uncomment datasets when ready to run full benchmark
           - component: "data_loader"
             data_source_dir: ["/home/mark/projects/omb/spatially_variable_genes/datasets"]
-            dataset_id: ["spatial_10x_visium/human_heart", "spatial_10x_visium/mouse_brain_coronal_section1"]
+            dataset_id: ["spatial_10x_visium/human_heart", "spatial_10x_visium/mouse_brain_coronal_section1", "spatial_10x_visium/mouse_brain_coronal_section1", "spatial_10x_visium/human_heart", "spatial_10x_visium/human_brain_cancer", "spatial_10x_visium/human_breast_cancer_1", "spatial_10x_visium/human_breast_cancer_2", "spatial_10x_xenium/human_colon_cancer", "spatial_dbit_seq/mouse_e10_brain"]
 
           ## spatial_10x_visium (20 datasets)
           #- values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--dataset_name", "mouse_brain_coronal_section1", "--data_source_dir", "/home/mark/projects/omb/aidan/spatially_variable_genes/datasets"]
@@ -216,35 +220,35 @@ stages:
           - component: "methods/true_ranking"
 
       ## R-based methods
-      - id: boostgp
-        name: "BOOST-GP"
-        software_environment: "boostgp"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/boostgp"
-            n_iter: 10 
+#      - id: boostgp
+#        name: "BOOST-GP"
+#        software_environment: "boostgp"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/boostgp"
+#            n_iter: 10 
 
-      - id: nnsvg
-        name: "nnSVG"
-        software_environment: "nnsvg"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/nnsvg"
-            n_threads: 1
+#      - id: nnsvg
+#        name: "nnSVG"
+#        software_environment: "nnsvg"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/nnsvg"
+#            n_threads: 1
 
-      - id: spark
-        name: "SPARK"
-        software_environment: "spark"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/spark"
-            num_cores: 1
+#      - id: spark
+#        name: "SPARK"
+#        software_environment: "spark"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spark"
+#            num_cores: 1
 
       - id: spark_x
         name: "SPARK-X"
@@ -257,53 +261,63 @@ stages:
             num_cores: 4
 
       ## Python-based methods
-      - id: gpcounts
-        name: "GPcounts"
-        software_environment: "gpcounts"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/gpcounts"
+#      - id: gpcounts
+#        name: "GPcounts"
+#        software_environment: "gpcounts"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/gpcounts"
 
-      - id: moran_i
-        name: "Moran's I"
-        software_environment: "moran_i"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/moran_i"
-            coord_type_moran_i: "generic"
+#      - id: moran_i
+#        name: "Moran's I"
+#        software_environment: "moran_i"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/moran_i"
+#            coord_type_moran_i: "generic"
 
-      - id: scgco
-        name: "scGCO"
-        software_environment: "python_base"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/scgco"
+#      - id: scgco
+#        name: "scGCO"
+#        software_environment: "python_base"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/scgco"
 
-      - id: sepal
-        name: "Sepal"
-        software_environment: "sepal"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/sepal"
-            coord_type_sepal: "grid"
-            max_neighs_sepal: 6
+#      - id: sepal
+#        name: "Sepal"
+#        software_environment: "sepal"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/sepal"
+#            coord_type_sepal: "grid"
+#            max_neighs_sepal: 6
 
-      - id: somde
-        name: "SomDE"
-        software_environment: "somde"
+#      - id: somde
+#        name: "SomDE"
+#        software_environment: "somde"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/somde"
+
+
+      - id: spagcn-pinned
+        name: "SpaGCN w/ pinned versions (python packages from OP docker image + Python 3.11.10)"
+        software_environment: "spagcn-pinned"
         repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spagcn-isolate-test
           commit: main
         parameters:
-          - component: "methods/somde"
+          - component: "methods/spagcn"
 
       - id: spagcn
         name: "SpaGCN"
@@ -314,41 +328,41 @@ stages:
         parameters:
           - component: "methods/spagcn"
 
-      - id: spagft
-        name: "SpaGFT"
-        software_environment: "spagft"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/spagft"
+#      - id: spagft
+#        name: "SpaGFT"
+#        software_environment: "spagft"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spagft"
 
-      - id: spanve
-        name: "SPANVE"
-        software_environment: "spanve"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/spanve"
+#      - id: spanve
+#        name: "SPANVE"
+#        software_environment: "spanve"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spanve"
 
-      - id: spatialde
-        name: "SpatialDE"
-        software_environment: "spatialde"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/spatialde"
+#      - id: spatialde
+#        name: "SpatialDE"
+#        software_environment: "spatialde"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spatialde"
 
-      - id: spatialde2
-        name: "SpatialDE2"
-        software_environment: "spatialde2"
-        repository:
-          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-          commit: main
-        parameters:
-          - component: "methods/spatialde2"
+#      - id: spatialde2
+#        name: "SpatialDE2"
+#        software_environment: "spatialde2"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spatialde2"
 
 
     ## Methods consume data stage outputs

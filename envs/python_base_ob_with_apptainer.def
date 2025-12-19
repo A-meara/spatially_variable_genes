@@ -1,0 +1,61 @@
+Bootstrap: docker
+From: python:3.12
+
+%post
+    # Install apt packages including dependencies for Apptainer
+    apt-get update && apt-get install -y \
+        procps \
+        git \
+        wget \
+        build-essential \
+        libseccomp-dev \
+        pkg-config \
+        squashfs-tools \
+        cryptsetup \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Install Go (required for building Apptainer)
+    export GO_VERSION=1.21.6
+    cd /tmp
+    wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
+    rm go${GO_VERSION}.linux-amd64.tar.gz
+    export PATH=/usr/local/go/bin:$PATH
+
+    # Install Apptainer
+    export APPTAINER_VERSION=1.3.5
+    cd /tmp
+    wget https://github.com/apptainer/apptainer/releases/download/v${APPTAINER_VERSION}/apptainer-${APPTAINER_VERSION}.tar.gz
+    tar -xzf apptainer-${APPTAINER_VERSION}.tar.gz
+    cd apptainer-${APPTAINER_VERSION}
+    ./mconfig --prefix=/usr/local
+    make -C builddir
+    make -C builddir install
+    cd /
+    # Force remove build directory (may have protected files)
+    chmod -R u+w /tmp/apptainer-${APPTAINER_VERSION} 2>/dev/null || true
+    rm -rf /tmp/apptainer-${APPTAINER_VERSION} || true
+    rm -f /tmp/apptainer-${APPTAINER_VERSION}.tar.gz || true
+
+    # Clean up Go (not needed at runtime)
+    rm -rf /usr/local/go
+
+    # Install Python packages
+    pip install --no-cache-dir \
+        "anndata~=0.11.0" \
+        "scanpy~=1.11.0" \
+        pandas \
+        pyyaml \
+        requests \
+        jsonschema
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export PATH=/usr/local/bin:$PATH
+
+%labels
+    Author "Aidan Meara"
+    Version "1.0-apptainer"
+    Description "Python 3.12 base image with anndata and Apptainer - for nested container execution"
+    Source "openproblems-bio/openproblems + Apptainer"

@@ -1,0 +1,8 @@
+# ln -s ../aidan/spatially_variable_genes/datasets # does not work w/ apptainer
+#cp -r ../aidan/spatially_variable_genes/datasets . # needed this
+
+
+ob validate plan spatially_variable_genes_apptainer.yml 
+ob run --cores 4 --out-dir mark_run2 spatially_variable_genes_apptainer.yml 
+
+ob run --cores 4 --out-dir mark_run2 spatially_variable_genes_apptainer.yml --module load_spatial_data

@@ -1,12 +1,12 @@
 ## benchmark header info
 id: spatial_variable_genes_benchmark
 description: Benchmark for evaluating spatially variable gene detection methods on spatial transcriptomics data
-version: 1.0
+version: "1.0.1"
 benchmarker: "Aidan Meara"
 storage_api: S3
 ## S3 endpoint to share our benchmark results.
 storage: https://s3_object_storage_url.ch
-benchmark_yaml_spec: 0.01
+benchmark_yaml_spec: "0.01"
 software_backend: apptainer
 
 ## Software environment recipes associated to this benchmark.
@@ -60,6 +60,10 @@ software_environments:
     description: "SpaGCN method environment"
     apptainer: envs/spagcn.sif
     conda: envs/ob_example_clustering.yml
+  spagcn-pinned:
+    description: "SpaGCN method environment w/ Python package versions pinned"
+    apptainer: envs/spagcn-pinned.sif
+    conda: envs/ob_example_clustering.yml
   spagft:
     description: "SpaGFT method environment"
     apptainer: envs/spagft.sif
@@ -108,14 +112,17 @@ stages:
         name: "my_data_loader"
         software_environment: "python_base"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
           ## uncomment datasets when ready to run full benchmark
+          - component: "data_loader"
+            data_source_dir: ["/home/mark/projects/omb/spatially_variable_genes/datasets"]
+            dataset_id: ["spatial_10x_visium/human_heart", "spatial_10x_visium/mouse_brain_coronal_section1", "spatial_10x_visium/mouse_brain_coronal_section1", "spatial_10x_visium/human_heart", "spatial_10x_visium/human_brain_cancer", "spatial_10x_visium/human_breast_cancer_1", "spatial_10x_visium/human_breast_cancer_2", "spatial_10x_xenium/human_colon_cancer", "spatial_dbit_seq/mouse_e10_brain"]
 
           ## spatial_10x_visium (20 datasets)
-          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--dataset_name", "mouse_brain_coronal_section1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
-          - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart", "--dataset_name", "human_heart", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
+          #- values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/mouse_brain_coronal_section1", "--dataset_name", "mouse_brain_coronal_section1", "--data_source_dir", "/home/mark/projects/omb/aidan/spatially_variable_genes/datasets"]
+          #- values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_heart", "--dataset_name", "human_heart", "--data_source_dir", "/home/mark/projects/omb/aidan/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_brain_cancer", "--dataset_name", "human_brain_cancer", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_breast_cancer_1", "--dataset_name", "human_breast_cancer_1", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
           # - values: ["--component", "data_loader", "--dataset_id", "spatial_10x_visium/human_breast_cancer_2", "--dataset_name", "human_breast_cancer_2", "--data_source_dir", "/home/ameara/porting/spatially_variable_genes/datasets"]
@@ -197,56 +204,61 @@ stages:
         name: "Random Ranking"
         software_environment: "random_ranking"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/random_ranking", "--seed", "42"]
+          - component: "methods/random_ranking"
+            seed: 42
 
       - id: true_ranking
         name: "True Ranking"
         software_environment: "true_ranking"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/true_ranking"]
+          - component: "methods/true_ranking"
 
       ## R-based methods
-      - id: boostgp
-        name: "BOOST-GP"
-        software_environment: "boostgp"
-        repository:
-          url: https://github.com/A-meara/spatially_variable_genes
-          commit: main
-        parameters:
-          - values: ["--component", "methods/boostgp", "--n_iter", "10"]
+#      - id: boostgp
+#        name: "BOOST-GP"
+#        software_environment: "boostgp"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/boostgp"
+#            n_iter: 10 
 
-      - id: nnsvg
-        name: "nnSVG"
-        software_environment: "nnsvg"
-        repository:
-          url: https://github.com/A-meara/spatially_variable_genes
-          commit: main
-        parameters:
-          - values: ["--component", "methods/nnsvg", "--n_threads", "1"]
+#      - id: nnsvg
+#        name: "nnSVG"
+#        software_environment: "nnsvg"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/nnsvg"
+#            n_threads: 1
 
-      - id: spark
-        name: "SPARK"
-        software_environment: "spark"
-        repository:
-          url: https://github.com/A-meara/spatially_variable_genes
-          commit: main
-        parameters:
-          - values: ["--component", "methods/spark", "--num_cores", "1"]
+#      - id: spark
+#        name: "SPARK"
+#        software_environment: "spark"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spark"
+#            num_cores: 1
 
       - id: spark_x
         name: "SPARK-X"
         software_environment: "spark_x"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spark_x", "--num_cores", "4"]
+          - component: "methods/spark_x"
+            num_cores: 4
 
       ## Python-based methods
       - id: gpcounts
@@ -289,62 +301,61 @@ stages:
         name: "SomDE"
         software_environment: "somde"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spagcn-isolate-test
           commit: main
         parameters:
-          - values: ["--component", "methods/somde"]
+          - component: "methods/spagcn"
 
       - id: spagcn
         name: "SpaGCN"
         software_environment: "spagcn"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "methods/spagcn"]
+          - component: "methods/spagcn"
 
-      - id: spagft
-        name: "SpaGFT"
-        software_environment: "spagft"
-        repository:
-          url: https://github.com/A-meara/spatially_variable_genes
-          commit: main
-        parameters:
-          - values: ["--component", "methods/spagft"]
+#      - id: spagft
+#        name: "SpaGFT"
+#        software_environment: "spagft"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spagft"
 
-      - id: spanve
-        name: "SPANVE"
-        software_environment: "spanve"
-        repository:
-          url: https://github.com/A-meara/spatially_variable_genes
-          commit: main
-        parameters:
-          - values: ["--component", "methods/spanve"]
+#      - id: spanve
+#        name: "SPANVE"
+#        software_environment: "spanve"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spanve"
 
-      - id: spatialde
-        name: "SpatialDE"
-        software_environment: "spatialde"
-        repository:
-          url: https://github.com/A-meara/spatially_variable_genes
-          commit: main
-        parameters:
-          - values: ["--component", "methods/spatialde"]
+#      - id: spatialde
+#        name: "SpatialDE"
+#        software_environment: "spatialde"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spatialde"
 
-      - id: spatialde2
-        name: "SpatialDE2"
-        software_environment: "spatialde2"
-        repository:
-          url: https://github.com/A-meara/spatially_variable_genes
-          commit: main
-        parameters:
-          - values: ["--component", "methods/spatialde2"]
+#      - id: spatialde2
+#        name: "SpatialDE2"
+#        software_environment: "spatialde2"
+#        repository:
+#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
+#          commit: main
+#        parameters:
+#          - component: "methods/spatialde2"
 
 
     ## Methods consume data stage outputs
     inputs:
-      - entries:
-          - data.dataset
-          - data.solution  # Needed for control methods
+      - data.dataset
+      - data.solution  # Needed for control methods
 
     ## Methods stage outputs
     outputs:
@@ -358,16 +369,15 @@ stages:
         name: "Kendall Correlation"
         software_environment: "correlation"
         repository:
-          url: https://github.com/A-meara/spatially_variable_genes
+          url: https://github.com/markrobinsonuzh/spatially_variable_genes
           commit: main
         parameters:
-          - values: ["--component", "metrics/correlation"]
+          - component: "metrics/correlation"
 
     ## Metrics consume method predictions and ground truth
     inputs:
-      - entries:
-          - methods.predictions
-          - data.solution
+      - methods.predictions
+      - data.solution
 
     ## Metrics stage outputs
     outputs:

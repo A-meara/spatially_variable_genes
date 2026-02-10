@@ -261,58 +261,45 @@ stages:
             num_cores: 4
 
       ## Python-based methods
-#      - id: gpcounts
-#        name: "GPcounts"
-#        software_environment: "gpcounts"
-#        repository:
-#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-#          commit: main
-#        parameters:
-#          - component: "methods/gpcounts"
+      - id: gpcounts
+        name: "GPcounts"
+        software_environment: "gpcounts"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/gpcounts"]
 
-#      - id: moran_i
-#        name: "Moran's I"
-#        software_environment: "moran_i"
-#        repository:
-#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-#          commit: main
-#        parameters:
-#          - component: "methods/moran_i"
-#            coord_type_moran_i: "generic"
+      - id: moran_i
+        name: "Moran's I"
+        software_environment: "moran_i"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/moran_i", "--coord_type_moran_i", "generic"]
 
-#      - id: scgco
-#        name: "scGCO"
-#        software_environment: "python_base"
-#        repository:
-#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-#          commit: main
-#        parameters:
-#          - component: "methods/scgco"
+      - id: scgco
+        name: "scGCO"
+        software_environment: "python_base"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/scgco"]
 
-#      - id: sepal
-#        name: "Sepal"
-#        software_environment: "sepal"
-#        repository:
-#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-#          commit: main
-#        parameters:
-#          - component: "methods/sepal"
-#            coord_type_sepal: "grid"
-#            max_neighs_sepal: 6
+      - id: sepal
+        name: "Sepal"
+        software_environment: "sepal"
+        repository:
+          url: https://github.com/A-meara/spatially_variable_genes
+          commit: main
+        parameters:
+          - values: ["--component", "methods/sepal", "--coord_type_sepal", "grid", "--max_neighs_sepal", "6"]
 
-#      - id: somde
-#        name: "SomDE"
-#        software_environment: "somde"
-#        repository:
-#          url: https://github.com/markrobinsonuzh/spatially_variable_genes
-#          commit: main
-#        parameters:
-#          - component: "methods/somde"
-
-
-      - id: spagcn-pinned
-        name: "SpaGCN w/ pinned versions (python packages from OP docker image + Python 3.11.10)"
-        software_environment: "spagcn-pinned"
+      - id: somde
+        name: "SomDE"
+        software_environment: "somde"
         repository:
           url: https://github.com/markrobinsonuzh/spagcn-isolate-test
           commit: main
